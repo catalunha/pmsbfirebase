@@ -1,10 +1,20 @@
 import * as functions from 'firebase-functions';
 
-/*
- * Criando e Alterando relacao de [ Perfil >> UsuarioPerfil ] para cada um dos Usuarios
+/**
+ *  UPLOAD
  */
 
-import * as usuarioPerfilFunction from './funcoes/usuario-perfil';
+ import * as uploadFuntion from './funcoes/upload_funtion';
+
+ //quando Upload.upload ter seu valor alterado de [false] para [true] alterar os dados de path mostrados em updateCollection.
+ exports.uploadFunction = functions.firestore.document('Upload/{uploadId}').onUpdate(uploadFuntion.iniciarAlterarUploadFunction);
+
+
+/*
+ * Criando e Alterando relacao de [ Perfil >> UsuarioPerfil ] para cada um dos Usuarios
+ 
+
+import * as usuarioPerfilFunction from './funcoes/perfil_funtion';
 
 exports.criarRelacaoPerfilEUsuarioPerfil = functions.firestore.document('Perfil/{pefilId}').onWrite(
     async (perfilSnap: any) => {
@@ -31,3 +41,5 @@ exports.removerRelacaoPerfilEUsuarioPerfil = functions.firestore.document('Perfi
         })
         console.log("ONDELETE >> " + perfilSnap.id);
     });
+
+*/

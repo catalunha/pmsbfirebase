@@ -1,9 +1,13 @@
 import * as admin from 'firebase-admin';
 admin.initializeApp();
-const db = admin.firestore();
+const databaseReferences = admin.firestore();
 
 export default class DatabaseReferences{
-    public static usuariosRef = db.collection('Usuario');
-    public static pefilRef = db.collection('Perfil');
-    public static usuarioPerfilRef = db.collection('UsuarioPerfil');
+    //referencia geral
+    public static db = databaseReferences;
+    //referencias auxiliares
+    public static usuariosRef = databaseReferences.collection('Usuario');
+    public static pefilRef = databaseReferences.collection('Perfil');
+    public static uploadRef = databaseReferences.collection('Upload');
+    public static usuarioPerfilRef = databaseReferences.collection('UsuarioPerfil');
 }

@@ -27,7 +27,7 @@ export function _criarRelacaoPerfilComUsuarioPerfil(perfilRef: any) {
 export function _criarNovoDocUsuarioPerfil(perfilRef: any, usuarioRef: any) {
     const perfilData = perfilRef.data();
     const usuarioData = usuarioRef.data();
-    //console.log("perfilData >> " + JSON.stringify(perfilData));
+
     DatabaseReferences.usuarioPerfilRef.doc().set({
         perfilID: {
             contentType: perfilData.contentType,
@@ -38,6 +38,8 @@ export function _criarNovoDocUsuarioPerfil(perfilRef: any, usuarioRef: any) {
             id: usuarioRef.id,
             nome: usuarioData.nome
         }
+    }).then(() => {
+        console.log("RELACAO CRIADA : PERFIL >> USUARIOPERFIL : " + usuarioData.nome)
     })
 }
 
