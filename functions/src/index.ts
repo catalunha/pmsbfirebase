@@ -1,6 +1,13 @@
 import * as functions from 'firebase-functions';
 
 /**
+ * USUARIO
+ */
+import * as usuarioFunction from './funcoes/usuario_perfil_funtion';
+
+exports.usuarioUpdadeFunction = functions.firestore.document('Usuario/{uploadId}').onUpdate(usuarioFunction.iniciarUpdateCollectionUsuario);
+
+/**
  *  UPLOAD
  */
 
