@@ -3,17 +3,19 @@ import * as functions from 'firebase-functions';
 /**
  * USUARIO
  */
-import * as usuarioFunction from './funcoes/usuario_perfil_funtion';
+//import * as usuarioFunction from './funcoes/usuario_funtion';
 
-exports.usuarioUpdadeFunction = functions.firestore.document('Usuario/{uploadId}').onUpdate(usuarioFunction.iniciarUpdateCollectionUsuario);
+//exports.usuarioUpdadeFunction = functions.firestore.document('Usuario/{uploadId}').onUpdate(usuarioFunction.iniciarUpdateCollectionUsuario);
+
+//exports.usuarioOnCreateFunction = functions.firestore.document('Usuario/{uploadId}').onCreate(usuarioFunction.iniciarCreateCollectionUsuario);
 
 /**
  *  UPLOAD
  */
 
- import * as uploadFuntion from './funcoes/upload_funtion';
+import * as uploadFuntion from './funcoes/upload_funtion';
 
- //quando Upload.upload ter seu valor alterado de [false] para [true] alterar os dados de path mostrados em updateCollection.
+//quando Upload.upload ter seu valor alterado de [false] para [true] alterar os dados de path mostrados em updateCollection.
 
 exports.uploadFunction = functions.firestore.document('Upload/{uploadId}').onUpdate(uploadFuntion.iniciarAlterarUploadFunction);
 
@@ -21,7 +23,6 @@ exports.uploadFunction = functions.firestore.document('Upload/{uploadId}').onUpd
 /*
  * Criando e Alterando relacao de [ Perfil >> UsuarioPerfil ] para cada um dos Usuarios
  
-
 import * as usuarioPerfilFunction from './funcoes/perfil_funtion';
 
 exports.criarRelacaoPerfilEUsuarioPerfil = functions.firestore.document('Perfil/{pefilId}').onWrite(
@@ -49,5 +50,4 @@ exports.removerRelacaoPerfilEUsuarioPerfil = functions.firestore.document('Perfi
         })
         console.log("ONDELETE >> " + perfilSnap.id);
     });
-
 */

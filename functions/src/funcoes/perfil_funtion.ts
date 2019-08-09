@@ -34,7 +34,7 @@ export function _criarNovoDocUsuarioPerfil(perfilRef: any, usuarioRef: any) {
             id: perfilRef.id,
             nome: perfilData.nome,
         },
-        usuarioId: {
+        usuarioID: {
             id: usuarioRef.id,
             nome: usuarioData.nome
         }
