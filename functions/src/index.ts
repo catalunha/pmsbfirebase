@@ -1,5 +1,15 @@
 import * as functions from 'firebase-functions';
 
+
+/**
+ * CHAT
+ */
+
+import * as chatFunctions  from './funcoes/chat_functions';
+
+//exports.chatCreateFunction = functions.firestore.document('Chat/{uploadId}/ChatNoticacao/{chatNotificacaoId}').onCreate(chatFunctions.iniciarOnCreate);
+exports.chatMensagemOnCreateFunction = functions.firestore.document('Chat/{uploadId}/ChatMensagem/{chatMensagemId}').onCreate(chatFunctions.iniciarOnCreateChatMensagem);
+
 /**
  * USUARIO
  */
@@ -13,11 +23,11 @@ import * as functions from 'firebase-functions';
  *  UPLOAD
  */
 
-import * as uploadFuntion from './funcoes/upload_funtion';
+//import * as uploadFuntion from './funcoes/upload_funtion';
 
 //quando Upload.upload ter seu valor alterado de [false] para [true] alterar os dados de path mostrados em updateCollection.
 
-exports.uploadFunction = functions.firestore.document('Upload/{uploadId}').onUpdate(uploadFuntion.iniciarAlterarUploadFunction);
+//exports.uploadFunction = functions.firestore.document('Upload/{uploadId}').onUpdate(uploadFuntion.iniciarAlterarUploadFunction);
 
 
 /*
