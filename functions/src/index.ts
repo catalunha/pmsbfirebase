@@ -1,21 +1,45 @@
 import * as functions from 'firebase-functions';
 
 
+
+/**
+ * Eixo
+ */
+import * as eixoFuntion from './funcoes/eixo_function';
+
+exports.eixoOnUpdateFuntion = functions.firestore.document('Eixo/{eixoId}').onUpdate(eixoFuntion.iniciarUpdateCollectionEixo);
+
+/**
+ * Setor censitario
+ */
+
+import * as setorCensitarioFunctions from './funcoes/setor_censitario_functions';
+
+exports.setorCensitarioOnUpdateFunction = functions.firestore.document('SetorCensitario/{setorCensitarioId}').onUpdate(setorCensitarioFunctions.iniciarSetorCensitarioOnUpdate);
+ /**
+ * Cargo
+ */
+
+import * as cargoFunctions from './funcoes/cargo_function';
+
+exports.cargoOnUpdateFunction = functions.firestore.document('Cargo/{cargoId}').onUpdate(cargoFunctions.iniciarUpdateCollectionCargo);
+
 /**
  * CHAT
  */
 
-import * as chatFunctions  from './funcoes/chat_functions';
+ 
+// import * as chatFunctions  from './funcoes/chat_functions';
 
-//exports.chatCreateFunction = functions.firestore.document('Chat/{uploadId}/ChatNoticacao/{chatNotificacaoId}').onCreate(chatFunctions.iniciarOnCreate);
-exports.chatMensagemOnCreateFunction = functions.firestore.document('Chat/{uploadId}/ChatMensagem/{chatMensagemId}').onCreate(chatFunctions.iniciarOnCreateChatMensagem);
+// //exports.chatCreateFunction = functions.firestore.document('Chat/{uploadId}/ChatNoticacao/{chatNotificacaoId}').onCreate(chatFunctions.iniciarOnCreate);
+// exports.chatMensagemOnCreateFunction = functions.firestore.document('Chat/{uploadId}/ChatMensagem/{chatMensagemId}').onCreate(chatFunctions.iniciarOnCreateChatMensagem);
 
 /**
  * USUARIO
  */
-//import * as usuarioFunction from './funcoes/usuario_funtion';
+import * as usuarioFunction from './funcoes/usuario_funtion';
 
-//exports.usuarioUpdadeFunction = functions.firestore.document('Usuario/{uploadId}').onUpdate(usuarioFunction.iniciarUpdateCollectionUsuario);
+exports.usuarioUpdadeFunction = functions.firestore.document('Usuario/{uploadId}').onUpdate(usuarioFunction.iniciarUpdateCollectionUsuario);
 
 //exports.usuarioOnCreateFunction = functions.firestore.document('Usuario/{uploadId}').onCreate(usuarioFunction.iniciarCreateCollectionUsuario);
 

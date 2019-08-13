@@ -14,7 +14,7 @@ export function iniciarUpdateCollectionCargo(uploadSnap: any) {
     if (uploadSnapBeforeData.nome != uploadSnapAfterData.nome) {
         console.log("ALTERANDO NOME DE USUARIO NAS DEMAIS COLLECTIONS")
         //Usuario
-        DatabaseReferences.atualizarNomeDeCollectionEmOutrasCollections('Usuario', 'cargo.cargoID', uploadSnapId, { 'cargo.nome': uploadSnapAfterData.nome })
+        DatabaseReferences.atualizarNomeDeCollectionEmOutrasCollections('Usuario', 'cargoID.id', uploadSnapId, { 'cargoID.nome': uploadSnapAfterData.nome })
     } else {
         console.log("NAO FOI ENCONTRADO ALTERANCAO DE NOME DE USUARIO")
     }

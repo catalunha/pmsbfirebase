@@ -14,19 +14,19 @@ export function iniciarUpdateCollectionUsuario(uploadSnap: any) {
     if (uploadSnapBeforeData.nome != uploadSnapAfterData.nome) {
         console.log("ALTERANDO NOME DE USUARIO NAS DEMAIS COLLECTIONS")
         //UsuarioPerfil
-        DatabaseReferences.atualizarNomeDeCollectionEmOutrasCollections('UsuarioPerfil', 'usuario.usuarioID', uploadSnapId, { 'usuario.nome': uploadSnapAfterData.nome })
+        DatabaseReferences.atualizarNomeDeCollectionEmOutrasCollections('UsuarioPerfil', 'usuarioID.id', uploadSnapId, { 'usuarioID.nome': uploadSnapAfterData.nome })
         //QuestionarioAplicado
-        DatabaseReferences.atualizarNomeDeCollectionEmOutrasCollections('QuestionarioAplicado', 'aplicador.usuarioID', uploadSnapId, { 'aplicador.nome': uploadSnapAfterData.nome })
-        DatabaseReferences.atualizarNomeDeCollectionEmOutrasCollections('QuestionarioAplicado', 'criou.usuarioID', uploadSnapId, { 'criou.nome': uploadSnapAfterData.nome })
-        DatabaseReferences.atualizarNomeDeCollectionEmOutrasCollections('QuestionarioAplicado', 'editou.usuarioID', uploadSnapId, { 'editou.nome': uploadSnapAfterData.nome })
+        DatabaseReferences.atualizarNomeDeCollectionEmOutrasCollections('QuestionarioAplicado', 'aplicador.id', uploadSnapId, { 'aplicador.nome': uploadSnapAfterData.nome })
+        DatabaseReferences.atualizarNomeDeCollectionEmOutrasCollections('QuestionarioAplicado', 'criou.id', uploadSnapId, { 'criou.nome': uploadSnapAfterData.nome })
+        DatabaseReferences.atualizarNomeDeCollectionEmOutrasCollections('QuestionarioAplicado', 'editou.id', uploadSnapId, { 'editou.nome': uploadSnapAfterData.nome })
         //Questionario
-        DatabaseReferences.atualizarNomeDeCollectionEmOutrasCollections('Questionario', 'criou.usuarioID', uploadSnapId, { 'criou.nome': uploadSnapAfterData.nome })
-        DatabaseReferences.atualizarNomeDeCollectionEmOutrasCollections('Questionario', 'editou.usuarioID', uploadSnapId, { 'editou.nome': uploadSnapAfterData.nome })
+        DatabaseReferences.atualizarNomeDeCollectionEmOutrasCollections('Questionario', 'criou.id', uploadSnapId, { 'criou.nome': uploadSnapAfterData.nome })
+        DatabaseReferences.atualizarNomeDeCollectionEmOutrasCollections('Questionario', 'editou.id', uploadSnapId, { 'editou.nome': uploadSnapAfterData.nome })
         //Produto
-        DatabaseReferences.atualizarNomeDeCollectionEmOutrasCollections('Produto', 'editou.usuarioID', uploadSnapId, { 'editou.nome': uploadSnapAfterData.nome })
+        DatabaseReferences.atualizarNomeDeCollectionEmOutrasCollections('Produto', 'usuarioID.id', uploadSnapId, { 'usuarioID.nome': uploadSnapAfterData.nome })
         //Noticias
-        DatabaseReferences.atualizarNomeDeCollectionEmOutrasCollections('Noticia', 'destinatario.'+uploadSnapId+'.id', true, { ['destinatario.'+uploadSnapId+'.nome']: uploadSnapAfterData.nome })
-        DatabaseReferences.atualizarNomeDeCollectionEmOutrasCollections('Noticia', 'editor.usuarioID', uploadSnapId, { 'editor.nome': uploadSnapAfterData.nome })
+        DatabaseReferences.atualizarNomeDeCollectionEmOutrasCollections('Noticia', 'usuarioIDDestino.'+uploadSnapId+'.id', true, { ['usuarioIDDestino.'+uploadSnapId+'.nome']: uploadSnapAfterData.nome })
+        DatabaseReferences.atualizarNomeDeCollectionEmOutrasCollections('Noticia', 'usuarioIDEditor.id', uploadSnapId, { 'usuarioIDEditor.nome': uploadSnapAfterData.nome })
 
     } else {
         console.log("NAO FOI ENCONTRADO ALTERANCAO DE NOME DE USUARIO")
