@@ -60,7 +60,7 @@ export function iniciarOnCreate(uploadSnap: any) {
         DatabaseReferences.usuariosRef.doc(usuarioID).get().then((usuarioSnap: any) => {
             const usuarioData = usuarioSnap.data();
             //const uploadId = usuarioSnap.id;
-            enviarNotificacaoToken(usuarioData.pushToken, message);
+            enviarNotificacaoToken(usuarioData.tokenFCM, message);
         })
     });
 }
