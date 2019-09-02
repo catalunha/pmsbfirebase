@@ -47,11 +47,20 @@ import * as functions from 'firebase-functions';
  *  UPLOAD
  */
 
-import * as uploadFuntion from './funcoes/upload_funtion';
+// import * as uploadFuntion from './funcoes/upload_funtion';
 
-// quando Upload.upload ter seu valor alterado de [false] para [true] alterar os dados de path mostrados em updateCollection.
+// // quando Upload.upload ter seu valor alterado de [false] para [true] alterar os dados de path mostrados em updateCollection.
 
-exports.uploadFunction = functions.firestore.document('Upload/{uploadId}').onUpdate(uploadFuntion.iniciarAlterarUploadFunction);
+// exports.uploadFunction = functions.firestore.document('Upload/{uploadId}').onUpdate(uploadFuntion.iniciarAlterarUploadFunction);
+
+/**
+ *  QUESTIONARIO
+ */
+
+import * as questionarioFuntion from './funcoes/questionario_functions';
+
+exports.questionarioOnUpdateFunction = functions.firestore.document('Questionario/{questionarioId}').onUpdate(questionarioFuntion.iniciarUpdateCollectionQuestionario);
+
 
 
 /*
