@@ -9,6 +9,16 @@ import * as functions from 'firebase-functions';
 
 // exports.eixoOnUpdateFuntion = functions.firestore.document('Eixo/{eixoId}').onUpdate(eixoFuntion.iniciarUpdateCollectionEixo);
 
+
+// /**
+//  * Documentos
+//  */
+
+import * as documentosFunctions from './funcoes/documentos_functions';
+
+exports.documentoOnCreateFuntion = functions.firestore.document('Documento/{documentoId}').onCreate(documentosFunctions.iniciarOnCreate);
+
+
 // /**
 //  * Setor censitario
 //  */
@@ -57,9 +67,9 @@ import * as functions from 'firebase-functions';
  *  QUESTIONARIO
  */
 
-import * as questionarioFuntion from './funcoes/questionario_functions';
+// import * as questionarioFuntion from './funcoes/questionario_functions';
 
-exports.questionarioOnUpdateFunction = functions.firestore.document('Questionario/{questionarioId}').onUpdate(questionarioFuntion.iniciarUpdateCollectionQuestionario);
+// exports.questionarioOnUpdateFunction = functions.firestore.document('Questionario/{questionarioId}').onUpdate(questionarioFuntion.iniciarUpdateCollectionQuestionario);
 
 
 
