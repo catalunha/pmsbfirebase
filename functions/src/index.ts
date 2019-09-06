@@ -14,9 +14,9 @@ import * as functions from 'firebase-functions';
 //  * Documentos
 //  */
 
-import * as documentosFunctions from './funcoes/documentos_functions';
+import * as googleDriveFunctions from './funcoes/googleDrive_functions';
 
-exports.documentoOnCreateFuntion = functions.firestore.document('Documento/{documentoId}').onCreate(documentosFunctions.iniciarOnCreate);
+exports.googleDriveOnCreateFuntion = functions.firestore.document('GoogleDrive/{documentoId}').onCreate(googleDriveFunctions.iniciarOnCreate);
 
 
 // /**
