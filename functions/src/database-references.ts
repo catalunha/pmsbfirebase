@@ -12,6 +12,7 @@ export default class DatabaseReferences{
     public static pefilRef = databaseReferences.collection('Perfil');
     public static uploadRef = databaseReferences.collection('Upload');
     public static usuarioPerfilRef = databaseReferences.collection('UsuarioPerfil');
+    public static documentoRef = databaseReferences.collection('Documento');
 
     public static atualizarNomeDeCollectionEmOutrasCollections(collectionNome:any,whereRefId:any ,novaRefId: any, updateJsonData:any) {
         this.db.collection(collectionNome).where(whereRefId, '==', novaRefId).get().then(async (dadosFiltrado: any) => {
