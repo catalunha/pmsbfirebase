@@ -4,6 +4,7 @@ const { google } = require('googleapis');
 const OAuth2 = google.auth.OAuth2;
 const docs = google.docs('v1');
 const sheets = google.sheets('v4');
+const drive = google.drive('v2');
 
 export function iniciarOnCreate(documentSnap: any) {
     const documentSnapData = documentSnap.data();
@@ -26,11 +27,14 @@ export function iniciarOnCreate(documentSnap: any) {
     if (documentSnapData.tipo == 'documento') {
 
         return criarNovoDocument(oAuth2Client, documentSnapData, documentSnapId).then((data: any) => {
+            inserirPermicaoArquivo(oAuth2Client, data.documentId, documentSnapData.usuario, documentSnap);
             console.log("Salvando dado do doc no firestore.")
+
             return documentSnap.ref.set({
                 criado: true,
                 arquivoID: data.documentId,
             }, { merge: true });
+
         }).catch(err => {
             console.error('Error na função criarNovoDocument: ' + err.message);
             return 0;
@@ -39,6 +43,7 @@ export function iniciarOnCreate(documentSnap: any) {
     } else if (documentSnapData.tipo == 'planilha') {
 
         return criarNovaPlanilha(oAuth2Client, documentSnapData, documentSnapId).then((data: any) => {
+            inserirPermicaoArquivo(oAuth2Client, data.documentId, documentSnapData.usuario, documentSnap);
             console.log("Salvando dado da plan no firestore.")
             return documentSnap.ref.set({
                 criado: true,
@@ -51,7 +56,7 @@ export function iniciarOnCreate(documentSnap: any) {
 
     } else {
 
-        console.log("Tipo de arquivo nao reconhecido >> docId: ")
+        console.log("ERROR >> GDRIVE >> Tipo de arquivo nao reconhecido")
         return 0;
 
     }
@@ -94,3 +99,98 @@ export function criarNovaPlanilha(auth: any, data: any, snapID: any) {
         });
     });
 }
+
+//export function inserirPermicaoArquivo(auth: any, fileId: any, value: any, type: any, role: any, documentSnap:any) {
+// inserirPermicaoArquivo(oAuth2Client, data.documentId, 'nata.wsd@gmail.com', 'user', 'writer', documentSnap);
+
+export function inserirPermicaoArquivo(auth: any, fileId: any, usuarioData: any, documentSnap: any) {
+
+    const listaPermicao: any = { "escrever": "writer", "ler": "reader" };
+
+    var keyEmail: any;
+
+
+    for (keyEmail in usuarioData) {
+
+        const tipo: any = usuarioData[keyEmail].tipo;
+
+        const body = {
+            'value': keyEmail,
+            'type': 'group',
+            'role': listaPermicao[tipo]
+        };
+
+        drive.permissions.insert({
+            'sendNotificationEmail': false,
+            'auth': auth,
+            'fileId': fileId,
+            'resource': body
+        }, (err: any, res: any) => {
+            if (err) {
+                console.log('inserirPermicaoArquivo returned an error: ' + err);
+            }
+            else {
+                console.log("inserirPermicaoArquivo >> Nova autentificacao criada no gdrive, user: " + keyEmail + " >> " + res.data.id);
+
+                documentSnap.ref.set({
+                    'usuario': {
+                        [keyEmail]: {
+                            permissaoID: res.data.id
+                        }
+                    },
+                }, { merge: true });
+
+            }
+        });
+
+    }
+}
+
+
+
+///
+
+
+// var google = require('googleapis');
+// var _ = require('lodash-node/compat');
+// var Q = require('q');   
+// var OAuth2 = google.auth.OAuth2; 
+
+
+// var CLIENT_ID = '...';
+// var CLIENT_SECRET = '...';
+// var REDIRECT_URL = '...';
+
+// var shareFile = function (fileName) {
+//   var deferred = Q.defer();
+//   var drive = google.drive('v2');
+//   var auth = new OAuth2(CLIENT_ID, CLIENT_SECRET, REDIRECT_URL);
+
+//   drive.files.list({auth: auth}, function (err, res) {
+//     var foundFile = _.first(_.filter(res.items, {title: fileName, "explicitlyTrashed": false}));
+
+//     if (!foundFile) {
+//         deferred.reject('File ' + fileName + ' has not been found.');
+//         return;
+//     }
+
+//     drive.permissions.list({fileId: foundFile.id, auth: auth}, function (err, res) {
+
+//         if (_.isEmpty(_.find(res.items, 'role', 'reader'))) {
+//             var body = {
+//                 'value': 'default',
+//                 'type': 'anyone',
+//                 'role': 'reader'
+//             };
+
+//             drive.permissions.insert({
+//                 fileId: foundFile.id,
+//                 resource: body,
+//                 auth: auth
+//             }, function (err, res, body) {
+//                 deferred.resolve(body);
+//             });
+//         }
+//     });
+// });
+// return deferred.promise;
