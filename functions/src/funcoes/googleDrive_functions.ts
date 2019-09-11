@@ -1,4 +1,5 @@
-// import DatabaseReferences from "../database-references";
+import DatabaseReferences from "../database-references";
+// import { link } from "fs";
 
 const { google } = require('googleapis');
 const OAuth2 = google.auth.OAuth2;
@@ -7,6 +8,7 @@ const sheets = google.sheets('v4');
 const drive = google.drive('v2');
 
 export function iniciarOnCreate(documentSnap: any) {
+
     const documentSnapData = documentSnap.data();
     const documentSnapId = documentSnap.id;
 
@@ -24,10 +26,11 @@ export function iniciarOnCreate(documentSnap: any) {
     });
 
 
-    if (documentSnapData.tipo == 'documento') {
+    if (documentSnapData.tipo == 'document') {
 
         return criarNovoDocument(oAuth2Client, documentSnapData, documentSnapId).then((data: any) => {
-            inserirPermicaoArquivo(oAuth2Client, data.documentId, documentSnapData.usuario, documentSnap);
+            inserirPermissaoLinkCompartilhado(oAuth2Client, data.documentId, documentSnapData, documentSnap);
+            salvarReferenciaArquivoNaCollectionPai(documentSnapData.updateCollection, data.documentId);
             console.log("Salvando dado do doc no firestore.")
 
             return documentSnap.ref.set({
@@ -40,10 +43,11 @@ export function iniciarOnCreate(documentSnap: any) {
             return 0;
         });;
 
-    } else if (documentSnapData.tipo == 'planilha') {
+    } else if (documentSnapData.tipo == 'spreadsheets') {
 
         return criarNovaPlanilha(oAuth2Client, documentSnapData, documentSnapId).then((data: any) => {
-            inserirPermicaoArquivo(oAuth2Client, data.documentId, documentSnapData.usuario, documentSnap);
+            inserirPermissaoLinkCompartilhado(oAuth2Client, data.documentId, documentSnapData, documentSnap);
+            salvarReferenciaArquivoNaCollectionPai(documentSnapData.updateCollection, data.documentId);
             console.log("Salvando dado da plan no firestore.")
             return documentSnap.ref.set({
                 criado: true,
@@ -100,52 +104,91 @@ export function criarNovaPlanilha(auth: any, data: any, snapID: any) {
     });
 }
 
-//export function inserirPermicaoArquivo(auth: any, fileId: any, value: any, type: any, role: any, documentSnap:any) {
-// inserirPermicaoArquivo(oAuth2Client, data.documentId, 'nata.wsd@gmail.com', 'user', 'writer', documentSnap);
 
-export function inserirPermicaoArquivo(auth: any, fileId: any, usuarioData: any, documentSnap: any) {
-
-    const listaPermicao: any = { "escrever": "writer", "ler": "reader" };
+export function inserirPermissaoLinkCompartilhado(auth: any, fileId: any, documentData: any, documentSnap: any) {
 
     var keyEmail: any;
 
+    const body = {
+        'role': documentData.link,
+        'type': "anyone",
+    };
 
-    for (keyEmail in usuarioData) {
+    drive.permissions.insert({
+        'auth': auth,
+        'fileId': fileId,
+        'resource': body,
+        'withLink': true
+    }, (err: any, res: any) => {
+        if (err) {
+            console.log('inserirPermissaoLinkCompartilhado returned an error: ' + err);
+        }
+        else {
+            console.log("inserirPermissaoLinkCompartilhado >> Nova autentificacao criada no gdrive, user: " + keyEmail + " >> " + res.data.id);
+        }
+    });
 
-        const tipo: any = usuarioData[keyEmail].tipo;
 
-        const body = {
-            'value': keyEmail,
-            'type': 'group',
-            'role': listaPermicao[tipo]
-        };
-
-        drive.permissions.insert({
-            'sendNotificationEmail': false,
-            'auth': auth,
-            'fileId': fileId,
-            'resource': body
-        }, (err: any, res: any) => {
-            if (err) {
-                console.log('inserirPermicaoArquivo returned an error: ' + err);
-            }
-            else {
-                console.log("inserirPermicaoArquivo >> Nova autentificacao criada no gdrive, user: " + keyEmail + " >> " + res.data.id);
-
-                documentSnap.ref.set({
-                    'usuario': {
-                        [keyEmail]: {
-                            permissaoID: res.data.id
-                        }
-                    },
-                }, { merge: true });
-
-            }
-        });
-
-    }
 }
 
+
+export function salvarReferenciaArquivoNaCollectionPai(snapData: any, reference: any) {
+
+    const collection = snapData.collection;
+    const document = snapData.document;
+    const field = snapData.field;
+
+    DatabaseReferences.db.collection(collection).doc(document).update({
+        [field]: reference
+    }).then(produtoDoc => {
+        console.log("Google drive - salvando a refencia no " + collection);
+    }).catch(err => {
+        console.log("Google drive - ERRO >> salvando a refencia no " + collection);
+    });
+}
+
+
+// export function inserirPermicaoArquivo(auth: any, fileId: any, usuarioData: any, documentSnap: any) {
+
+//     const listaPermicao: any = { "escrever": "writer", "ler": "reader" };
+
+//     var keyEmail: any;
+
+
+//     for (keyEmail in usuarioData) {
+
+//         const permissao: any = usuarioData[keyEmail].permissao;
+
+//         const body = {
+//             'value': keyEmail,
+//             'type': 'group',
+//             'role': listaPermicao[permissao]
+//         };
+
+//         drive.permissions.insert({
+//             'sendNotificationEmail': false,
+//             'auth': auth,
+//             'fileId': fileId,
+//             'resource': body
+//         }, (err: any, res: any) => {
+//             if (err) {
+//                 console.log('inserirPermicaoArquivo returned an error: ' + err);
+//             }
+//             else {
+//                 console.log("inserirPermicaoArquivo >> Nova autentificacao criada no gdrive, user: " + keyEmail + " >> " + res.data.id);
+
+//                 documentSnap.ref.set({
+//                     'usuario': {
+//                         [keyEmail]: {
+//                             permissaoID: res.data.id
+//                         }
+//                     },
+//                 }, { merge: true });
+//             }
+//         });
+
+//     }
+// }
 
 
 ///
