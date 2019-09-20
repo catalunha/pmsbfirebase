@@ -1,6 +1,5 @@
 import DatabaseReferences from "../database-references";
 
-
 // ON UPDATE
 
 export function iniciarUpdateCollectionCargo(uploadSnap: any) {

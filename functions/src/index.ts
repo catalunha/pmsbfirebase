@@ -2,6 +2,15 @@ import * as functions from 'firebase-functions';
 
 
 
+/**
+ * Documentos
+ */
+
+import * as relatorioFunctions from './funcoes/relatorios_functions';
+
+exports.questionarioAplicadoOnUpdateFunction = functions.firestore.document('QuestionarioAplicado/{QuestionarioAplicadoId}').onUpdate(relatorioFunctions.iniciaOnUpdate);
+
+
 // /**
 //  * Eixo
 //  */
@@ -11,12 +20,12 @@ import * as functions from 'firebase-functions';
 
 
 // /**
-//  * Documentos
+//  * Google Drive
 //  */
 
-import * as googleDriveFunctions from './funcoes/googleDrive_functions';
+// import * as googleDriveFunctions from './funcoes/googleDrive_functions';
 
-exports.googleDriveOnCreateFuntion = functions.firestore.document('GoogleDrive/{documentoId}').onCreate(googleDriveFunctions.iniciarOnCreate);
+// exports.googleDriveOnCreateFuntion = functions.firestore.document('GoogleDrive/{documentoId}').onCreate(googleDriveFunctions.iniciarOnCreate);
 
 
 // /**

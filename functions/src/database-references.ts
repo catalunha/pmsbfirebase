@@ -9,6 +9,9 @@ export default class DatabaseReferences{
     
     //referencias auxiliares
     public static usuariosRef = databaseReferences.collection('Usuario');
+    public static questionarioAplicadoRef = databaseReferences.collection('QuestionarioAplicado');
+    public static PerguntaAplicadaRef = databaseReferences.collection('PerguntaAplicada');
+
     public static pefilRef = databaseReferences.collection('Perfil');
     public static uploadRef = databaseReferences.collection('Upload');
     public static usuarioPerfilRef = databaseReferences.collection('UsuarioPerfil');
