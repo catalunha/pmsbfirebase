@@ -1,0 +1,39 @@
+{
+  "content": [
+    {
+      "cabecalho": "cabeçalho"
+    },
+    {
+      "url": "Url imagem"
+    },
+    {
+      "titulo": "pdf titulo"
+    }
+  ],
+  "style": {
+    "header": {
+      "fontSize": 18,
+      "bold": true,
+      "alignment": "center"
+    },
+    "subheader": {
+      "fontSize": 12
+    },
+    "parametrost": {
+      "fontSize": 14
+    },
+    "superMargin": {
+      "margin": [
+        30,
+        0,
+        100,
+        10
+      ],
+      "fontSize": 15
+    },
+    "nome02": {
+      "nome": "teste",
+      "outro": "outroteste"
+    }
+  }
+}
