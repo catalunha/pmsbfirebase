@@ -1,11 +1,48 @@
-import TemplateBase from './template_base';
 
-export default class QuestionarioAplicadoTemplate extends TemplateBase {
+export default class QuestionarioAplicadoTemplate {
 
     constructor() {
-        super();
+       
     }
 
+    private docDefinition: any = {
+        content: [],
+        styles: {
+            header: {
+                fontSize: 18,
+                bold: true,
+                alignment: 'center',
+                
+            },
+            subheader: {
+                fontSize: 12
+            },
+            parametrost: {
+              fontSize: 14
+            },
+            superMargin: {
+                margin: [30, 0, 100, 10],
+                fontSize: 15
+            },
+            quote: {
+                italics: true
+            },
+            small: {
+                fontSize: 8
+            },
+            parametros: {
+                fontSize: 14
+            },
+        },
+    }
+
+    public getDocDefinition() {
+        return this.docDefinition
+    }
+
+    public addContentElement(contentElement: any) {
+        this.docDefinition.content.push(contentElement);
+    }
 
     public adicionarCabecalho(titulo: any, subtitulo: any) {
         this.addContentElement({
@@ -53,44 +90,44 @@ export default class QuestionarioAplicadoTemplate extends TemplateBase {
         });
     }
 
-    // public adicionarPerguntaImagem() {
-    //     this.addContentElement({
+    public adicionarPerguntaImagem() {
+        this.addContentElement({
 
-    //     });
-    // }
+        });
+    }
 
-    // public adicionarPerguntaTexto() {
-    //     this.addContentElement({
+    public adicionarPerguntaTexto() {
+        this.addContentElement({
 
-    //     });
-    // }
-
-
-    // public adicionarPerguntaCoordenada() {
-    //     this.addContentElement({
-
-    //     });
-    // }
+        });
+    }
 
 
-    // public adicionarPerguntaNumero() {
-    //     this.addContentElement({
+    public adicionarPerguntaCoordenada() {
+        this.addContentElement({
 
-    //     });
-    // }
-
-
-    // public adicionarPerguntaEscolhaUnica() {
-    //     this.addContentElement({
-
-    //     });
-    // }
+        });
+    }
 
 
-    // public adicionarPerguntaEscolhaMultipla() {
-    //     this.addContentElement({
+    public adicionarPerguntaNumero() {
+        this.addContentElement({
 
-    //     });
-    // }
+        });
+    }
+
+
+    public adicionarPerguntaEscolhaUnica() {
+        this.addContentElement({
+
+        });
+    }
+
+
+    public adicionarPerguntaEscolhaMultipla() {
+        this.addContentElement({
+
+        });
+    }
 
 }

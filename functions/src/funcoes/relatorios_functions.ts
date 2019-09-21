@@ -17,23 +17,35 @@ export function iniciaOnUpdate(snap: any) {
     questionarioRelatorio = new QuestionarioAplicadoTemplate();
     const uploadSnapId = snap.after.id;
     const questData = snap.after.data()
+
     return criarPdf(uploadSnapId, questData).then((bufferData: any) => {
         const bucket = admin.storage().bucket();
         const file = bucket.file('relatorios-questionario-aplicado/' + uploadSnapId + '.pdf');
-        file.save(bufferData).then((data: any) => {
+        file.save(bufferData).then(() => {
+          //
         })
     }).catch(() => {
         console.log("ERROR")
     })
 };
 
+// export function salvarUrlDoArquivo(file: any) {
+
+//     file.getSignedUrl({
+//         action: 'read',
+//         expires: '03-09-2491'
+//     }).then((urlArquivo: any) => {
+//         // urlArquivo -> url retornada do arquivo
+//         console.log(" Url do arquivo >> " + urlArquivo[0])
+//     });
+// }
 
 export function criarPdf(snapId: any, questData: any) {
     return new Promise(async (resolve: any) => {
         pdfMake.vfs = font.pdfMake.vfs
         console.log("INICIA CRIAR PDF")
         await gerarDocDefinitionContent(snapId, questData).then(async () => {
-            var pdfDoc = await pdfMake.createPdf(questionarioRelatorio.getPdfContent(), options);
+            var pdfDoc = await pdfMake.createPdf(questionarioRelatorio.getDocDefinition(), options);
             pdfDoc.getBuffer((data: any) => {
                 resolve(data)
             });
