@@ -3,12 +3,21 @@ import * as functions from 'firebase-functions';
 
 
 /**
- * Documentos
+ * Tarefas Acao
  */
 
-import * as relatorioFunctions from './funcoes/relatorios_functions';
+import * as controleTarefa from './funcoes/controle_tarefa_function';
 
-exports.questionarioAplicadoOnUpdateFunction = functions.firestore.document('QuestionarioAplicado/{QuestionarioAplicadoId}').onUpdate(relatorioFunctions.iniciaOnUpdate);
+exports.controleTarefaOnUpdateFunction = functions.firestore.document('ControleTarefa/{ControleTarefaId}').onUpdate(controleTarefa.iniciarControleTarefaOnUpdate);
+
+
+// /**
+//  * Documentos
+//  */
+
+// import * as relatorioFunctions from './funcoes/relatorios_functions';
+
+// exports.questionarioAplicadoOnUpdateFunction = functions.firestore.document('QuestionarioAplicado/{QuestionarioAplicadoId}').onUpdate(relatorioFunctions.iniciaOnUpdate);
 
 
 // /**
