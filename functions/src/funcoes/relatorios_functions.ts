@@ -22,7 +22,7 @@ export function iniciaOnUpdate(snap: any) {
         const bucket = admin.storage().bucket();
         const file = bucket.file('relatorios-questionario-aplicado/' + uploadSnapId + '.pdf');
         file.save(bufferData).then(() => {
-          //
+            //
         })
     }).catch(() => {
         console.log("ERROR")
@@ -58,7 +58,7 @@ export function criarPdf(snapId: any, questData: any) {
 
 export function gerarDocDefinitionContent(snapId: any, questData: any) {
     return new Promise(async (resolve: any) => {
-        DatabaseReferences.PerguntaAplicadaRef.where("questionario.id", '==', snapId).get().then(async (perguntas: any) => {
+        DatabaseReferences.PerguntaAplicadaRef.where("questionario.id", '==', snapId).orderBy("ordem", "asc").get().then(async (perguntas: any) => {
             prencherRelatorio(resolve, perguntas, questData, snapId)
         }).catch((err: any) => {
             console.log('Error getting documents : PerguntaAplicada ', err)
@@ -72,9 +72,8 @@ export function prencherRelatorio(resolve: any, perguntas: any, questData: any, 
     /**
      * Os elementos devem ser inseridos em ordem
      */
-    questionarioRelatorio.adicionarCabecalho("Relatorio cabeçalho teste", "Teste Teste Teste Teste Teste Teste Teste Teste Teste Teste Teste Teste ")
-    questionarioRelatorio.adicicionarQuestionarioID(questId)
-    questionarioRelatorio.adicionarEixo(questData.eixo.nome)
+    questionarioRelatorio.adicionarCabecalho(questData)
+    questionarioRelatorio.adicicionarSubCabecalho(questData, questId)
 
     /**
      * Percorre a lista de pergunta e insere uma de cada vez
@@ -83,6 +82,7 @@ export function prencherRelatorio(resolve: any, perguntas: any, questData: any, 
         perguntas.docs.forEach(async (pergunta: any, index_filt: any, array_filt: any) => {
             adicionarElementoPerguntaContent(pergunta);
             if ((index_filt + 1) >= array_filt.length) {
+                questionarioRelatorio.adicionarTabelaAoDocDefinition()
                 resolve("")
             }
         })
@@ -91,8 +91,34 @@ export function prencherRelatorio(resolve: any, perguntas: any, questData: any, 
 
 export function adicionarElementoPerguntaContent(pergunta: any) {
     let perguntaData = pergunta.data()
+
     /**
-     * Implementar swich case pra filtrar o tipo da pergunta [perguntaData.tipo.nome]
-     */
-    questionarioRelatorio.adicionarPergunta(perguntaData.titulo, perguntaData.tipo.nome)
+     * Implementar swich case pra filtrar o tipo da pergunta [perguntaData.tipo.id]
+    */
+
+    switch (perguntaData.tipo.id) {
+        case 'texto':
+            questionarioRelatorio.adicionarPerguntaTexto(perguntaData, pergunta.id)
+            break;
+        case 'numero':
+            questionarioRelatorio.adicionarPerguntaNumero(perguntaData, pergunta.id)
+            break;
+        case 'imagem':
+            questionarioRelatorio.adicionarPerguntaImagem(perguntaData, pergunta.id)
+            break;
+        case 'arquivo':
+            questionarioRelatorio.adicionarPerguntaArquivo(perguntaData, pergunta.id)
+            break;
+        case 'coordenada':
+            questionarioRelatorio.adicionarPerguntaCoordenada(perguntaData, pergunta.id)
+            break;
+        case 'escolhaunica':
+            questionarioRelatorio.adicionarPerguntaEscolhaUnica(perguntaData, pergunta.id)
+            break;
+        case 'escolhamultipla':
+            questionarioRelatorio.adicionarPerguntaEscolhaMultipla(perguntaData, pergunta.id)
+            break;
+        default:
+            break;
+    }
 }

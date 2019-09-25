@@ -1,133 +1,395 @@
+import { Timestamp } from "@google-cloud/firestore";
 
 export default class QuestionarioAplicadoTemplate {
 
     constructor() {
-       
+
+    }
+
+    private tabela: any = {
+        style: 'tableExample',
+        table: {
+            headerRows: 1,
+            body: [
+                [{ text: 'Pergunta', style: 'T1' }, { text: 'Respondida', style: 'T1' }],
+            ]
+        },
+        layout: {
+            hLineWidth: function (i: any, node: any) {
+                return (i === 0 || i === node.table.body.length) ? 1 : 1;
+            },
+            vLineWidth: function (i: any, node: any) {
+                return (i === 0 || i === node.table.widths.length) ? 1 : 1;
+            },
+            hLineColor: function (i: any, node: any) {
+                return (i === 0 || i === node.table.body.length) ? 'black' : 'black';
+            },
+            paddingRight: function (i: any, node: any) {
+                return (i === node.table.widths.length - 1) ? 150 : 150;
+            }
+        }
     }
 
     private docDefinition: any = {
         content: [],
         styles: {
             header: {
-                fontSize: 18,
+                fontSize: 22,
                 bold: true,
                 alignment: 'center',
-                
             },
             subheader: {
-                fontSize: 12
+                fontSize: 13
             },
             parametrost: {
-              fontSize: 14
+                fontSize: 16,
+                margin: [0, 0]
+            },
+            A1: {
+                fontSize: 18,
+                margin: [0, 5]
+            },
+            A2: {
+                fontSize: 16,
+                margin: [0, 5]
+            },
+            A3: {
+                fontSize: 14,
+                margin: [0, 5]
+            },
+            T1: {
+                fontSize: 13,
+                alignment: 'center',
+                bold: true,
             },
             superMargin: {
                 margin: [30, 0, 100, 10],
                 fontSize: 15
             },
-            quote: {
-                italics: true
-            },
-            small: {
-                fontSize: 8
-            },
-            parametros: {
-                fontSize: 14
-            },
+            margin: {
+                margin: [0, 10, 0, 0],
+            }
         },
+    }
+
+    private addContentElement(contentElement: any) {
+        this.docDefinition.content.push(contentElement);
     }
 
     public getDocDefinition() {
         return this.docDefinition
     }
 
-    public addContentElement(contentElement: any) {
-        this.docDefinition.content.push(contentElement);
+    /**
+  *  ESTRUTURA DA TABELA 
+  */
+
+    private addTableRow(pergunta: any) {
+        let per_respo: any = "";
+        if (pergunta['foiRespondida']) {
+            per_respo = "Foi respondida"
+        } else {
+            per_respo = "Nao foi respondida"
+        }
+        this.tabela.table.body.push([`${pergunta['ordem']} - ${pergunta['titulo']}`, `${per_respo} `])
     }
 
-    public adicionarCabecalho(titulo: any, subtitulo: any) {
+    public adicionarTabelaAoDocDefinition() {
+        this.addContentElement({ text: 'Resumo:', margin: [0,10,0,5] },)
+        this.addContentElement(this.tabela)
+    }
+
+    /**
+  *  ESTRUTURA DO CABECALHO DO DOCUMENTO 
+  */
+
+    public adicionarCabecalho(questionarioData: any) {
         this.addContentElement({
             stack: [
-                'PMSB-TO-22',
-                { text: 'RELATÓRIO DO QUESTIONÁRIO APLICADO', style: 'subheader' },
+                { text: questionarioData.nome, style: 'header' },
+                { text: '___________________________________________________', style: 'header' },
             ],
-            style: 'header',
+            alignment: 'center',
+            margin: [0, 20],
         });
     }
 
-    public adicicionarQuestionarioID(nomeQuestionario: any) {
+    public adicicionarSubCabecalho(questionarioData: any, questionarioId: any) {
         this.addContentElement({
             stack: [
-                { text: "Questionario ID: ", style: 'parametros' },
-                nomeQuestionario
+                { text: '', style: 'parametrost' },
 
             ],
-            margin: [0, 10],
-        });
-    }
+            margin: [0, 5],
+        },
+        );
 
-    public adicionarEixo(nomeEixo: any) {
         this.addContentElement({
             stack: [
-                { text: "Eixo : ", style: 'parametros' },
-                nomeEixo
-
+                { text: 'Referência: ' + questionarioData.referencia, style: 'parametrost' },
+                { text: '', style: 'margin' },
+                { text: 'Alguns dados importantes sobre este questionário.', style: 'parametrost' },
             ],
-            margin: [0, 10],
-        });
-    }
-
-    public adicionarPergunta(textoPergunta: any, tipoPergunta: any) {
-        this.addContentElement({
-            text: '\n_______________________________________________________________________________________________\n',
         })
+        let Timestamp = (questionarioData.aplicado as Timestamp).toDate()
+
+        let date = new Date()
+        
+        date.getTimezoneOffset()
+        
         this.addContentElement({
-            text: ['Tipo : ', { text: tipoPergunta, style: 'parametrost' },],
-            margin: [0, 0],
+            ol: [
+
+                {
+                    ul: [
+                        {
+                            text: [
+                                'Eixo: ' + questionarioData.eixo.nome,
+                            ], style: "subheader"
+                        },
+                        {
+                            text: [
+                                'Setor: ' + questionarioData.setorCensitarioID.nome,
+                            ], style: "subheader"
+                        },
+                        {
+                            text: [
+                                'Aplicador: ' + questionarioData.aplicador.nome,
+                            ], style: "subheader"
+                        },
+                        {
+                            text: [
+                                'Aplicado: ' + date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear() + " - " + date.getHours() + ":" + date.getMinutes(),
+                            ], style: "subheader"
+                        },
+                        {
+                            text: [
+                                'id: ' + questionarioId,
+                            ], style: "subheader"
+                        }
+
+                    ]
+
+                }
+            ],
+            margin: [0, 10],
+        })
+    }
+
+    /**
+     *  ESTRUTURA DA PERGUNTA 
+     */
+
+    private addCabecalhoPergunta(pergunta: any) {
+        this.addContentElement({
+            stack: [
+                { text: `Pergunta ${pergunta['ordem']} - ${pergunta['titulo']}`, style: 'A1' },
+                '_______________________________________________________________________________________________'
+            ],
         });
+
         this.addContentElement({
-            text: ['Texto : ', { text: textoPergunta, style: 'parametrost' },],
-            margin: [0, 0],
+            stack: [
+                { text: `${pergunta['textoMarkdown']}`, style: 'A2' },
+                { text: 'Resposta tipo: ' + pergunta['tipo']['nome'], style: 'A3' },
+            ],
+
         });
     }
 
-    public adicionarPerguntaImagem() {
-        this.addContentElement({
+    private addSubCabecalhoPergunta(pergunta: any, perguntaId: any) {
+        this.addContentElement({ text: 'Outras informações importantes:', style: 'A3' })
 
+        let temPendencias = pergunta['temPendencias'] ? "Tem pendência" : "Não tem pendência";
+        let foiRespondida = pergunta['foiRespondida'] ? "Foi respondida" : "Não foi respondida";
+        let temRespostaValida = pergunta['temRespostaValida'] ? "Tem resposta válida" : "Não tem resposta válida";
+
+        this.addContentElement({
+            ol: [
+
+                {
+                    ul: [
+                        {
+                            text: [
+                                'Observação: ' + pergunta['observacao'],
+                            ], style: "subheader"
+                        },
+                        {
+                            text: [
+                                foiRespondida,
+                            ], style: "subheader"
+                        },
+                        {
+                            text: [
+                                temRespostaValida
+                            ], style: "subheader"
+                        },
+                        {
+                            text: [
+                                temPendencias,
+                            ], style: "subheader"
+                        },
+                        {
+                            text: [
+                                'Id: ' + perguntaId,
+                            ], style: "subheader"
+                        }
+
+                    ]
+
+                }
+            ],
+            margin: [0, 10],
         });
     }
 
-    public adicionarPerguntaTexto() {
-        this.addContentElement({
+    // TEXTO ------------------------------------------------------------------------------------------------
 
-        });
+    public adicionarPerguntaTexto(pergunta: any, perguntaId: any) {
+
+        this.addCabecalhoPergunta(pergunta)
+
+        if (pergunta['pergunta.texto'] != null && Object.entries(pergunta.arquivo).length > 0) {
+            this.addContentElement({ text: pergunta['pergunta.texto'], style: 'A3' })
+        } else {
+            this.addContentElement({ text: 'Nada informado', style: 'A3' })
+        }
+
+        this.addSubCabecalhoPergunta(pergunta, perguntaId)
+        this.addTableRow(pergunta)
+
     }
 
+    // NUMERO ------------------------------------------------------------------------------------------------
 
-    public adicionarPerguntaCoordenada() {
-        this.addContentElement({
+    public adicionarPerguntaNumero(pergunta: any, perguntaId: any) {
 
-        });
+        this.addCabecalhoPergunta(pergunta)
+
+        if (pergunta['pergunta.texto'] != null && Object.entries(pergunta.arquivo).length > 0) {
+            this.addContentElement({ text: pergunta['pergunta.texto'], style: 'A3' })
+        } else {
+            this.addContentElement({ text: 'Nada informado', style: 'A3' })
+        }
+
+        this.addSubCabecalhoPergunta(pergunta, perguntaId)
+        this.addTableRow(pergunta)
+
     }
 
+    // IMAGEM ------------------------------------------------------------------------------------------------
 
-    public adicionarPerguntaNumero() {
-        this.addContentElement({
+    public adicionarPerguntaImagem(pergunta: any, perguntaId: any) {
 
-        });
+        this.addCabecalhoPergunta(pergunta)
+
+        if (pergunta.arquivo != null && Object.entries(pergunta.arquivo).length > 0) {
+            let contador = 1;
+            for (var item in pergunta.arquivo) {
+                this.addContentElement({ text: "Imagem " + contador + ' . Click para visualizar.', link: pergunta.arquivo[item]['url'], decoration: 'underline', color: "blue" })
+                contador++;
+            }
+        } else {
+            this.addContentElement({ text: 'Nada informado', style: 'A3' })
+        }
+
+        this.addSubCabecalhoPergunta(pergunta, perguntaId)
+        this.addTableRow(pergunta)
+
     }
 
+    // ARQUIVO ------------------------------------------------------------------------------------------------
 
-    public adicionarPerguntaEscolhaUnica() {
-        this.addContentElement({
+    public adicionarPerguntaArquivo(pergunta: any, perguntaId: any) {
 
-        });
+        this.addCabecalhoPergunta(pergunta)
+
+        if (pergunta.arquivo != null && Object.entries(pergunta.arquivo).length > 0) {
+            let contador = 1;
+            for (var item in pergunta.arquivo) {
+                this.addContentElement({ text: "Arquivo " + contador + ' . Click para visualizar.', link: pergunta.arquivo[item]['url'], decoration: 'underline', color: "blue" })
+                contador++;
+            }
+        } else {
+            this.addContentElement({ text: 'Nada informado', style: 'A3' })
+        }
+
+        this.addSubCabecalhoPergunta(pergunta, perguntaId)
+        this.addTableRow(pergunta)
+
     }
 
+    // COORDENADA ------------------------------------------------------------------------------------------------
 
-    public adicionarPerguntaEscolhaMultipla() {
-        this.addContentElement({
+    public adicionarPerguntaCoordenada(pergunta: any, perguntaId: any) {
 
-        });
+        this.addCabecalhoPergunta(pergunta)
+
+        if (pergunta.coordenada != null && pergunta.coordenada.length > 0) {
+            for (var item in pergunta.coordenada) {
+                this.addContentElement({ text: `(${pergunta.coordenada[item]["latitude"]},${pergunta.coordenada[item]["longitude"]})`, style: 'A3' })
+            }
+        } else {
+            this.addContentElement({ text: 'Nada informado', style: 'A3' })
+        }
+
+        this.addSubCabecalhoPergunta(pergunta, perguntaId)
+        this.addTableRow(pergunta)
+
+    }
+
+    // ESCOLHA UNICA ------------------------------------------------------------------------------------------------
+
+    public adicionarPerguntaEscolhaUnica(pergunta: any, perguntaId: any) {
+
+        this.addCabecalhoPergunta(pergunta)
+
+        if (pergunta.escolhas != null && Object.entries(pergunta.escolhas).length > 0) {
+
+            Object.entries(pergunta.escolhas).sort((a: any, b: any) => { return a[1].ordem - b[1].ordem }).forEach((value: any) => {
+                if (value[1].marcada) {
+                    this.addContentElement({ text: ` [ x ] ${value[1].texto}`, style: 'A3' })
+                } else {
+                    this.addContentElement({ text: ` [    ] ${value[1].texto}`, style: 'A3' })
+                }
+            })
+
+            for (var item in pergunta.coordenada) {
+                this.addContentElement({ text: `(${pergunta.coordenada[item]["latitude"]},${pergunta.coordenada[item]["longitude"]})`, style: 'A3' })
+            }
+        } else {
+            this.addContentElement({ text: 'Nada informado', style: 'A3' })
+        }
+
+        this.addSubCabecalhoPergunta(pergunta, perguntaId)
+        this.addTableRow(pergunta)
+
+    }
+
+    // ESCOLHA MULTIPLA ------------------------------------------------------------------------------------------------
+    public adicionarPerguntaEscolhaMultipla(pergunta: any, perguntaId: any) {
+
+        this.addCabecalhoPergunta(pergunta)
+
+        if (pergunta.escolhas != null && Object.entries(pergunta.escolhas).length > 0) {
+
+            Object.entries(pergunta.escolhas).sort((a: any, b: any) => { return a[1].ordem - b[1].ordem }).forEach((value: any) => {
+                if (value[1].marcada) {
+                    this.addContentElement({ text: ` [ x ] ${value[1].texto}`, style: 'A3' })
+                } else {
+                    this.addContentElement({ text: ` [    ] ${value[1].texto}`, style: 'A3' })
+                }
+            })
+
+            for (var item in pergunta.coordenada) {
+                this.addContentElement({ text: `(${pergunta.coordenada[item]["latitude"]},${pergunta.coordenada[item]["longitude"]})`, style: 'A3' })
+            }
+        } else {
+            this.addContentElement({ text: 'Nada informado', style: 'A3' })
+        }
+
+        this.addSubCabecalhoPergunta(pergunta, perguntaId)
+        this.addTableRow(pergunta)
     }
 
 }
