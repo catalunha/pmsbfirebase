@@ -6,18 +6,18 @@ import * as functions from 'firebase-functions';
  * Tarefas Acao
  */
 
-import * as controleTarefa from './funcoes/controle_tarefa_function';
+// import * as controleTarefa from './funcoes/controle_tarefa_function';
 
-exports.controleTarefaOnUpdateFunction = functions.firestore.document('ControleTarefa/{ControleTarefaId}').onUpdate(controleTarefa.iniciarControleTarefaOnUpdate);
+// exports.controleTarefaOnUpdateFunction = functions.firestore.document('ControleTarefa/{ControleTarefaId}').onUpdate(controleTarefa.iniciarControleTarefaOnUpdate);
 
 
 // /**
 //  * Documentos
 //  */
 
-// import * as relatorioFunctions from './funcoes/relatorios_functions';
+import * as relatorioFunctions from './funcoes/relatorios_functions';
 
-// exports.questionarioAplicadoOnUpdateFunction = functions.firestore.document('QuestionarioAplicado/{QuestionarioAplicadoId}').onUpdate(relatorioFunctions.iniciaOnUpdate);
+exports.questionarioAplicadoOnUpdateFunction = functions.firestore.document('QuestionarioAplicado/{QuestionarioAplicadoId}').onUpdate(relatorioFunctions.iniciaOnUpdate);
 
 
 // /**
