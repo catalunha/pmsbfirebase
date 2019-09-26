@@ -1,6 +1,6 @@
 // import * as functions from 'firebase-functions';
 import DatabaseReferences from "../database-references";
-import QuestionarioAplicadoTemplate from './documentos_templates/questionario_aplicado'
+import QuestionarioAplicadoTemplate from './documentos_templates/questionario_aplicado_template'
 
 const admin = require('firebase-admin');
 let pdfMake = require('pdfmake/build/pdfmake.js');
