@@ -1,6 +1,6 @@
-import { Timestamp } from "@google-cloud/firestore";
+// import { Timestamp } from "@google-cloud/firestore";
 
-export default class QuestionarioAplicadoTemplate {
+export default class RelatorioQuestionarioAplicadoTemplate {
 
     constructor() {
 
@@ -131,7 +131,7 @@ export default class QuestionarioAplicadoTemplate {
                 { text: 'Alguns dados importantes sobre este questionário.', style: 'parametrost' },
             ],
         })
-        let Timestamp = (questionarioData.aplicado as Timestamp).toDate()
+        // let Timestamp = (questionarioData.aplicado as Timestamp).toDate()
 
         let date = new Date()
         

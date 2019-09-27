@@ -17,6 +17,10 @@ export default class DatabaseReferences{
     public static usuarioPerfilRef = databaseReferences.collection('UsuarioPerfil');
     public static documentoRef = databaseReferences.collection('Documento');
 
+    public static setorCensitarioPainelRef = databaseReferences.collection('SetorCensitarioPainel');
+    public static painelRef = databaseReferences.collection('Painel');
+    public static setorCensitarioRef = databaseReferences.collection('SetorCensitario');
+
     public static atualizarNomeDeCollectionEmOutrasCollections(collectionNome:any,whereRefId:any ,novaRefId: any, updateJsonData:any) {
         this.db.collection(collectionNome).where(whereRefId, '==', novaRefId).get().then(async (dadosFiltrado: any) => {
             if (dadosFiltrado.docs.length > 0) {
@@ -28,6 +32,22 @@ export default class DatabaseReferences{
             }
         }).catch((err: any) => {
             console.log('Error getting documents : atualizarNomeUsuarioEmCollection ', err)
+        })
+    
+    }
+
+
+    public static apagarDocDeCollectionEmOutrasCollections(collectionNome:any,whereRefId:any ,novaRefId: any) {
+        this.db.collection(collectionNome).where(whereRefId, '==', novaRefId).get().then(async (dadosFiltrado: any) => {
+            if (dadosFiltrado.docs.length > 0) {
+                dadosFiltrado.docs.forEach(async (dadoFiltrado: any, index_filt: any, array_filt: any) => {
+                    this.db.collection(collectionNome).doc(dadoFiltrado.id).delete().then(()=>{
+                        console.log("DELETAR DOC NA COLECTION " + collectionNome  + " >> " + dadoFiltrado.id);
+                    })
+                })
+            }
+        }).catch((err: any) => {
+            console.log('Error getting documents : apagarDocDeCollectionEmOutrasCollections ', err)
         })
     
     }
