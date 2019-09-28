@@ -30,8 +30,9 @@ import * as functions from 'firebase-functions';
 
  import * as relatorioFunctions from './funcoes/relatorios_functions';
 
-exports.questionarioAplicadoOnUpdateFunction = functions.firestore.document('RelatorioPdfMaker/{RelatorioPdfMakerId}').onUpdate(relatorioFunctions.iniciaOnUpdate);
+exports.relatorioPdfMakeOnUpdateFunction = functions.firestore.document('RelatorioPdfMaker/{RelatorioPdfMakerId}').onUpdate(relatorioFunctions.iniciaOnUpdate);
 
+exports.relatorioPdfMakeOnCreateFunction = functions.firestore.document('RelatorioPdfMaker/{RelatorioPdfMakerId}').onCreate(relatorioFunctions.iniciaOnCreate);
 
 // /**
 //  * Eixo
@@ -54,13 +55,13 @@ exports.questionarioAplicadoOnUpdateFunction = functions.firestore.document('Rel
  * Setor censitario
  */
 
-import * as setorCensitarioFunctions from './funcoes/setor_censitario_functions';
+// import * as setorCensitarioFunctions from './funcoes/setor_censitario_functions';
 
-exports.setorCensitarioOnUpdateFunction = functions.firestore.document('SetorCensitario/{setorCensitarioId}').onUpdate(setorCensitarioFunctions.iniciarSetorCensitarioOnUpdate);
+// exports.setorCensitarioOnUpdateFunction = functions.firestore.document('SetorCensitario/{setorCensitarioId}').onUpdate(setorCensitarioFunctions.iniciarSetorCensitarioOnUpdate);
  
-exports.setorCensitarioOnCreateFunction = functions.firestore.document('SetorCensitario/{setorCensitarioId}').onCreate(setorCensitarioFunctions.iniciarOnCreate);
+// exports.setorCensitarioOnCreateFunction = functions.firestore.document('SetorCensitario/{setorCensitarioId}').onCreate(setorCensitarioFunctions.iniciarOnCreate);
 
-exports.setorCensitarioOnDeleteFunction = functions.firestore.document('SetorCensitario/{setorCensitarioId}').onDelete(setorCensitarioFunctions.iniciarOnDelete);
+// exports.setorCensitarioOnDeleteFunction = functions.firestore.document('SetorCensitario/{setorCensitarioId}').onDelete(setorCensitarioFunctions.iniciarOnDelete);
 
 /**
  * Cargo

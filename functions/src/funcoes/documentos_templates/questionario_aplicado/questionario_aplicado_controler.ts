@@ -9,14 +9,27 @@ export class RelatorioQuestionarioAplicadoController {
         this.questionarioRelatorio = new RelatorioQuestionarioAplicadoTemplate();
     }
 
-    public gerarDocDefinitionContent(documentData: any, documentId: any) {
-        return new Promise(async (resolve: any) => {
-            DatabaseReferences.db.collection(documentData.collection).doc(documentData.document).get().then((questionarioAplicadoData: any) => {
-                DatabaseReferences.PerguntaAplicadaRef.where("questionario.id", '==', questionarioAplicadoData.id).orderBy("ordem", "asc").get().then(async (perguntas: any) => {
-                    this.prencherRelatorio(resolve, perguntas, questionarioAplicadoData.data(), questionarioAplicadoData.id)
-                }).catch((err: any) => {
-                    console.log('Error getting documents : PerguntaAplicada ', err)
-                })
+    public gerarDocDefinitionContent(relatorioData: any, relatorioId: any) {
+        return new Promise(async (resolve: any, reject:any) => {
+            // PEGAR O DOC DO QUESTIONARIO APLICADO
+            let questionarioRef = DatabaseReferences.db.collection(relatorioData.collection).doc(relatorioData.document)
+            questionarioRef.get().then((questionarioAplicadoData: any) => {
+                if (!questionarioAplicadoData.exists) {
+                    console.log('No such document! : questionarioAplicadoData');
+                    reject()
+                } else {
+                    // PEGAR A LISTA DE PERGUNTAS DO QUESTIONARIO APLICADO
+
+                    DatabaseReferences.PerguntaAplicadaRef.where("questionario.id", '==', questionarioAplicadoData.id).orderBy("ordem", "asc").get().then(async (perguntas: any) => {
+                        this.prencherRelatorio(resolve, perguntas, questionarioAplicadoData.data(), questionarioAplicadoData.id)
+                    }).catch((err: any) => {
+                        console.log('Error getting documents : PerguntaAplicada ', err)
+                    })
+                }
+
+
+            }).catch((err: any) => {
+                console.log('Error getting documents :' + relatorioData.collection, err)
             })
         })
     }
@@ -36,7 +49,8 @@ export class RelatorioQuestionarioAplicadoController {
                 this.adicionarElementoPerguntaContent(pergunta);
                 if ((index_filt + 1) >= array_filt.length) {
                     this.questionarioRelatorio.adicionarTabelaAoDocDefinition()
-                    resolve(this.questionarioRelatorio)
+                    let docDefinition = this.questionarioRelatorio.getDocDefinition()
+                    resolve(docDefinition)
                 }
             })
         }
