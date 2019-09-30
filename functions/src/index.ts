@@ -1,6 +1,18 @@
 import * as functions from 'firebase-functions';
 
 
+/**
+ * PAINEL
+ */
+
+
+// import * as painelFunctions from './funcoes/painel_function';
+
+// exports.painelOnUpdateFunction = functions.firestore.document('Painel/{painelId}').onUpdate(painelFunctions.iniciaOnUpdate);
+
+// exports.painelOnCreateFunction = functions.firestore.document('Painel/{painelId}').onCreate(painelFunctions.iniciarOnCreate);
+
+// exports.painelOnDeleteFunction = functions.firestore.document('Painel/{painelId}').onDelete(painelFunctions.iniciarOnDelete);
 
 /**
  * Tarefas Acao
@@ -11,14 +23,16 @@ import * as functions from 'firebase-functions';
 // exports.controleTarefaOnUpdateFunction = functions.firestore.document('ControleTarefa/{ControleTarefaId}').onUpdate(controleTarefa.iniciarControleTarefaOnUpdate);
 
 
-// /**
-//  * Documentos
-//  */
+/**
+ * Documentos
+ */
 
-import * as relatorioFunctions from './funcoes/relatorios_functions';
 
-exports.questionarioAplicadoOnUpdateFunction = functions.firestore.document('QuestionarioAplicado/{QuestionarioAplicadoId}').onUpdate(relatorioFunctions.iniciaOnUpdate);
+ import * as relatorioFunctions from './funcoes/relatorios_functions';
 
+exports.relatorioPdfMakeOnUpdateFunction = functions.firestore.document('RelatorioPdfMaker/{RelatorioPdfMakerId}').onUpdate(relatorioFunctions.iniciaOnUpdate);
+
+exports.relatorioPdfMakeOnCreateFunction = functions.firestore.document('RelatorioPdfMaker/{RelatorioPdfMakerId}').onCreate(relatorioFunctions.iniciaOnCreate);
 
 // /**
 //  * Eixo
@@ -37,16 +51,21 @@ exports.questionarioAplicadoOnUpdateFunction = functions.firestore.document('Que
 // exports.googleDriveOnCreateFuntion = functions.firestore.document('GoogleDrive/{documentoId}').onCreate(googleDriveFunctions.iniciarOnCreate);
 
 
-// /**
-//  * Setor censitario
-//  */
+/**
+ * Setor censitario
+ */
 
 // import * as setorCensitarioFunctions from './funcoes/setor_censitario_functions';
 
 // exports.setorCensitarioOnUpdateFunction = functions.firestore.document('SetorCensitario/{setorCensitarioId}').onUpdate(setorCensitarioFunctions.iniciarSetorCensitarioOnUpdate);
-//  /**
-//  * Cargo
-//  */
+ 
+// exports.setorCensitarioOnCreateFunction = functions.firestore.document('SetorCensitario/{setorCensitarioId}').onCreate(setorCensitarioFunctions.iniciarOnCreate);
+
+// exports.setorCensitarioOnDeleteFunction = functions.firestore.document('SetorCensitario/{setorCensitarioId}').onDelete(setorCensitarioFunctions.iniciarOnDelete);
+
+/**
+ * Cargo
+ */
 
 // import * as cargoFunctions from './funcoes/cargo_function';
 

@@ -1,6 +1,10 @@
 import { Timestamp } from "@google-cloud/firestore";
+import * as moment from "moment";
+// // let moment = require('mom');
 
-export default class QuestionarioAplicadoTemplate {
+// import { Timestamp } from "@google-cloud/firestore";
+
+export default class RelatorioQuestionarioAplicadoTemplate {
 
     constructor() {
 
@@ -32,6 +36,14 @@ export default class QuestionarioAplicadoTemplate {
 
     private docDefinition: any = {
         content: [],
+        footer: function (currentPage:any, pageCount:any) { return { text: currentPage.toString() + ' de ' + pageCount, alignment: 'right', margin: [0, 0, 40, 50], color: "gray" } },
+        header: function (currentPage:any, pageCount:any, pageSize:any) {
+            // you can apply any logic and return any valid pdfmake element
+            return [
+                { text: 'Relatorio de questionario aplicado', alignment: 'right', margin: [0, 25, 40, 10], color: "gray" },
+                { canvas: [{ type: 'rect', x: 10, y: 32, w: pageSize.width - 10, h: 60 }] }
+            ]
+        },
         styles: {
             header: {
                 fontSize: 22,
@@ -95,7 +107,7 @@ export default class QuestionarioAplicadoTemplate {
     }
 
     public adicionarTabelaAoDocDefinition() {
-        this.addContentElement({ text: 'Resumo:', margin: [0,10,0,5] },)
+        this.addContentElement({ text: 'Resumo:', margin: [0, 10, 0, 5] })
         this.addContentElement(this.tabela)
     }
 
@@ -131,12 +143,10 @@ export default class QuestionarioAplicadoTemplate {
                 { text: 'Alguns dados importantes sobre este questionário.', style: 'parametrost' },
             ],
         })
-        let Timestamp = (questionarioData.aplicado as Timestamp).toDate()
-
-        let date = new Date()
-        
-        date.getTimezoneOffset()
-        
+        let timestamp = (questionarioData.aplicado as Timestamp).toDate()
+        timestamp.setHours(timestamp.getHours() - 3);
+        let horario = timestamp.toLocaleTimeString();
+        let data = moment(timestamp.toLocaleDateString(), "YYYY-MM-DD").utc().format("DD-MM-YYYY").toString();
         this.addContentElement({
             ol: [
 
@@ -159,7 +169,7 @@ export default class QuestionarioAplicadoTemplate {
                         },
                         {
                             text: [
-                                'Aplicado: ' + date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear() + " - " + date.getHours() + ":" + date.getMinutes(),
+                                'Aplicado: ' + data + " " + horario,
                             ], style: "subheader"
                         },
                         {
