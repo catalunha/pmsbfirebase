@@ -28,11 +28,11 @@ import * as functions from 'firebase-functions';
  */
 
 
- import * as relatorioFunctions from './funcoes/relatorios_functions';
+import * as relatorioFunctions from './funcoes/relatorios_functions';
 
-exports.relatorioPdfMakeOnUpdateFunction = functions.firestore.document('RelatorioPdfMaker/{RelatorioPdfMakerId}').onUpdate(relatorioFunctions.iniciaOnUpdate);
+exports.relatorioPdfMakeOnUpdateFunction = functions.firestore.document('RelatorioPdfMake/{RelatorioPdfMakeId}').onUpdate(relatorioFunctions.iniciaOnUpdate);
 
-exports.relatorioPdfMakeOnCreateFunction = functions.firestore.document('RelatorioPdfMaker/{RelatorioPdfMakerId}').onCreate(relatorioFunctions.iniciaOnCreate);
+exports.relatorioPdfMakeOnCreateFunction = functions.firestore.document('RelatorioPdfMake/{RelatorioPdfMakeId}').onCreate(relatorioFunctions.iniciaOnCreate);
 
 // /**
 //  * Eixo
@@ -58,7 +58,7 @@ exports.relatorioPdfMakeOnCreateFunction = functions.firestore.document('Relator
 // import * as setorCensitarioFunctions from './funcoes/setor_censitario_functions';
 
 // exports.setorCensitarioOnUpdateFunction = functions.firestore.document('SetorCensitario/{setorCensitarioId}').onUpdate(setorCensitarioFunctions.iniciarSetorCensitarioOnUpdate);
- 
+
 // exports.setorCensitarioOnCreateFunction = functions.firestore.document('SetorCensitario/{setorCensitarioId}').onCreate(setorCensitarioFunctions.iniciarOnCreate);
 
 // exports.setorCensitarioOnDeleteFunction = functions.firestore.document('SetorCensitario/{setorCensitarioId}').onDelete(setorCensitarioFunctions.iniciarOnDelete);
@@ -75,7 +75,7 @@ exports.relatorioPdfMakeOnCreateFunction = functions.firestore.document('Relator
  * CHAT
  */
 
- 
+
 // import * as chatFunctions  from './funcoes/chat_functions';
 
 // exports.chatCreateFunction = functions.firestore.document('Chat/{uploadId}/ChatNotificacao/{chatNotificacaoId}').onCreate(chatFunctions.iniciarOnCreate);
@@ -112,7 +112,7 @@ exports.relatorioPdfMakeOnCreateFunction = functions.firestore.document('Relator
 
 /*
  * Criando e Alterando relacao de [ Perfil >> UsuarioPerfil ] para cada um dos Usuarios
- 
+
 import * as usuarioPerfilFunction from './funcoes/perfil_funtion';
 
 exports.criarRelacaoPerfilEUsuarioPerfil = functions.firestore.document('Perfil/{pefilId}').onWrite(
@@ -136,7 +136,7 @@ exports.criarRelacaoPerfilEUsuarioPerfil = functions.firestore.document('Perfil/
 exports.removerRelacaoPerfilEUsuarioPerfil = functions.firestore.document('Perfil/{pefilId}').onDelete(
     async (perfilSnap: any) => {
         usuarioPerfilFunction._removerRelacoesDePerfilJaTemRelacaoUsuarioPerfil(perfilSnap.id).then(()=>{
-            console.log("perfilUsuario com o perfil " + perfilSnap.id + " foram removido !" ); 
+            console.log("perfilUsuario com o perfil " + perfilSnap.id + " foram removido !" );
         })
         console.log("ONDELETE >> " + perfilSnap.id);
     });

@@ -2,10 +2,9 @@
 import * as Relatorios from "./documentos_templates/documento_templates"
 
 const admin = require('firebase-admin');
+
 let pdfMake = require('pdfmake/build/pdfmake.js');
 let font = require('pdfmake/build/vfs_fonts.js');
-
-
 
 const options = {}
 
@@ -24,8 +23,11 @@ export function iniciaOnUpdate(snap: any) {
 export function iniciarGeracaoRelatorio(snapRef: any, uploadSnapId: any, relatorioData: any) {
     return relatorioData.pdfGerar ? criarPdf(uploadSnapId, relatorioData).then((bufferData: any) => {
         const bucket = admin.storage().bucket();
-        const file = bucket.file('relatorioPdfMake/' + uploadSnapId + '.pdf');
-        return file.save(bufferData).then(() => {
+        const file = bucket.file("relatorioPdfMake/" + uploadSnapId + '.pdf');
+
+        return file.save(bufferData, {
+            contentType: "application/pdf",
+        }).then(() => {
             return snapRef.ref.set({
                 pdfGerado: true,
                 pdfGerar: false,
@@ -47,9 +49,21 @@ export function criarPdf(snapId: any, relatorioData: any) {
                 gerarRelatorioResposta01(snapId, relatorioData, resolve, reject);
                 break;
             case "controle01":
-                gerarRelatorioResposta01(snapId, relatorioData, resolve, reject);
+                gerarRelatorioControle01(snapId, relatorioData, resolve, reject);
                 break;
             case "controle02":
+                gerarRelatorioControle02(snapId, relatorioData, resolve, reject);
+                break;
+            case "controle03":
+                gerarRelatorioControle02(snapId, relatorioData, resolve, reject);
+                break;
+            case "controle04":
+                gerarRelatorioControle02(snapId, relatorioData, resolve, reject);
+                break;
+            case "painel01":
+                gerarRelatorioControle02(snapId, relatorioData, resolve, reject);
+                break;
+            case "painel02":
                 gerarRelatorioControle02(snapId, relatorioData, resolve, reject);
                 break;
             default:
