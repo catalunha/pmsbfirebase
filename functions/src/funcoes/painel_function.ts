@@ -1,4 +1,6 @@
 import DatabaseReferences from "../database-references";
+import * as GoogleApiController from "../google_api_controller/google_api_controller_map"
+
 
 // ON CREATE
 
@@ -7,10 +9,15 @@ export function iniciarOnCreate(painelSnap: any) {
         setorCensitarioSnap.forEach((setor: any) => {
             _criarNovoDocSetorCensitarioPainel(painelSnap, setor);
         });
+        criarNovaColunaTabelaRelatorio(painelSnap)
     }).catch((err: any) => {
         console.log('Error getting usuarios-enviarNoticiaTodoUsuarios', err);
     });
+}
 
+export function criarNovaColunaTabelaRelatorio(painelSnap:any) {
+    let relatorioController = new GoogleApiController.SpreadSheetsApiController("1lGwxBTGXd55H6QfnJ_7WKuNBJi16dC_J6PBk0QR0viA");
+    relatorioController.addicionarNovaCelulaCabecalhoNaColuna(painelSnap.data().nome)
 }
 
 export function _criarNovoDocSetorCensitarioPainel(painelSnap: any, setorCensitarioSnap: any) {

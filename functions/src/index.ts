@@ -6,11 +6,11 @@ import * as functions from 'firebase-functions';
  */
 
 
-// import * as painelFunctions from './funcoes/painel_function';
+import * as painelFunctions from './funcoes/painel_function';
 
 // exports.painelOnUpdateFunction = functions.firestore.document('Painel/{painelId}').onUpdate(painelFunctions.iniciaOnUpdate);
 
-// exports.painelOnCreateFunction = functions.firestore.document('Painel/{painelId}').onCreate(painelFunctions.iniciarOnCreate);
+exports.painelOnCreateFunction = functions.firestore.document('Painel/{painelId}').onCreate(painelFunctions.iniciarOnCreate);
 
 // exports.painelOnDeleteFunction = functions.firestore.document('Painel/{painelId}').onDelete(painelFunctions.iniciarOnDelete);
 
@@ -28,11 +28,11 @@ import * as functions from 'firebase-functions';
  */
 
 
-import * as relatorioFunctions from './funcoes/relatorios_functions';
+// import * as relatorioFunctions from './funcoes/relatorios_functions';
 
-exports.relatorioPdfMakeOnUpdateFunction = functions.firestore.document('RelatorioPdfMake/{RelatorioPdfMakeId}').onUpdate(relatorioFunctions.iniciaOnUpdate);
+// exports.relatorioPdfMakeOnUpdateFunction = functions.firestore.document('RelatorioPdfMake/{RelatorioPdfMakeId}').onUpdate(relatorioFunctions.iniciaOnUpdate);
 
-exports.relatorioPdfMakeOnCreateFunction = functions.firestore.document('RelatorioPdfMake/{RelatorioPdfMakeId}').onCreate(relatorioFunctions.iniciaOnCreate);
+// exports.relatorioPdfMakeOnCreateFunction = functions.firestore.document('RelatorioPdfMake/{RelatorioPdfMakeId}').onCreate(relatorioFunctions.iniciaOnCreate);
 
 // /**
 //  * Eixo
