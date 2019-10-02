@@ -94,7 +94,9 @@ export class SpreadSheetsApiController extends GoogleApiControllerTemplateBase {
             console.log(" dadosTablela.values.length >> " + dadosTablela.values.length)
 
             let spreadModel = new SpreadSheetsBatchUpdateModel(this.spreadSheetID, this.oAuth2Client);
-            spreadModel.adicionarNovaCelula(this.columnToLetter(quantElementos), dadoCelula)
+            
+            let posicao = this.columnToLetter(quantElementos + 1) + "1"; // ex: D1
+            spreadModel.adicionarNovaCelula(posicao, dadoCelula)
 
             let model = spreadModel.getModel();
             console.log(model)
