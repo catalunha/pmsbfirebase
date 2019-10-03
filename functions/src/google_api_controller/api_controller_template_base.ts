@@ -5,7 +5,6 @@ const OAuth2 = google.auth.OAuth2;
 export default class GoogleApiControllerTemplateBase {
 
     public oAuth2Client: any;
-    public sheets: any
 
     constructor() {
 
@@ -18,8 +17,11 @@ export default class GoogleApiControllerTemplateBase {
         this.oAuth2Client.setCredentials({
             refresh_token: "1/cGTNyhlCKlehB0K-HN6yu4sAFu7L6pi90JBdhaHe5HeTrOX94FqpnK1iQB1KjPYJ"
         });
-
-        this.sheets = google.sheets('v4');
     }
+
+    public getOAuth2Client(){
+        return this.oAuth2Client;
+    }
+    
 }
 

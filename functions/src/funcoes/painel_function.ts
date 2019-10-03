@@ -1,23 +1,47 @@
 import DatabaseReferences from "../database-references";
 import * as GoogleApiController from "../google_api_controller/google_api_controller_map"
 
-
 // ON CREATE
 
 export function iniciarOnCreate(painelSnap: any) {
-    DatabaseReferences.setorCensitarioRef.get().then((setorCensitarioSnap: any) => {
+
+    return DatabaseReferences.setorCensitarioRef.get().then(async (setorCensitarioSnap: any) => {
         setorCensitarioSnap.forEach((setor: any) => {
             _criarNovoDocSetorCensitarioPainel(painelSnap, setor);
         });
-        criarNovaColunaTabelaRelatorio(painelSnap)
+        return adicionarNovoTipoPainelNaTabela(painelSnap)
     }).catch((err: any) => {
         console.log('Error getting usuarios-enviarNoticiaTodoUsuarios', err);
     });
 }
 
-export function criarNovaColunaTabelaRelatorio(painelSnap:any) {
+export async function adicionarNovoTipoPainelNaTabela(painelSnap: any) {
+
     let relatorioController = new GoogleApiController.SpreadSheetsApiController("1lGwxBTGXd55H6QfnJ_7WKuNBJi16dC_J6PBk0QR0viA");
-    relatorioController.addicionarNovaCelulaCabecalhoNaColuna(painelSnap.data().nome)
+
+    return await relatorioController.getDadosDaTabela("A:A").then((dadosTablela: any) => {
+
+        let quantElementos = dadosTablela.values.length;
+        let posicao = "A" + (quantElementos + 1); // ex: D1
+
+        console.log(" dadosTablela.values.length >> " + dadosTablela.values.length)
+
+        let spreadModel = new GoogleApiController.SpreadSheetsAppendModel(relatorioController.getSpreadSheetID(), relatorioController.getOAuth2Client(), posicao);
+
+        spreadModel.adicionarNovaCelula(painelSnap.data().nome)
+
+        let model = spreadModel.getModel();
+
+        relatorioController.appendNovaCelula(model).then(() => {
+            console.log("FOI - appendNovaCelula")
+        }).catch((err) => {
+            console.log(err)
+        })
+
+    }).catch((err: any) => {
+        console.error("inserir nova coluna na tabela : " + err)
+    })
+
 }
 
 export function _criarNovoDocSetorCensitarioPainel(painelSnap: any, setorCensitarioSnap: any) {
@@ -54,8 +78,15 @@ export function iniciaOnUpdate(painelSnap: any) {
     return 0;
 }
 
+
+/**
+ * ON DELETE
+ * REMOVENDO DADOS DA RELACAO DE PAINEL COM SETORCENSITARIOPAINEL
+ */
+
 export function iniciarOnDelete(painelSnap: any) {
     const painelId = painelSnap.id;
     DatabaseReferences.apagarDocDeCollectionEmOutrasCollections('SetorCensitarioPainel', 'painelID.id', painelId)
     return 0;
 }
+

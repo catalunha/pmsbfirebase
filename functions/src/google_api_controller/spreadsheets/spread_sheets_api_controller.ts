@@ -1,17 +1,19 @@
 
 import GoogleApiControllerTemplateBase from "../api_controller_template_base";
-import { SpreadSheetsBatchUpdateModel } from "./spread_sheet_model";
+const { google } = require('googleapis');
 
 export class SpreadSheetsApiController extends GoogleApiControllerTemplateBase {
 
     public spreadSheetID: string;
+    public sheets: any;
 
     constructor(spreadSheetID: string) {
         super()
         this.spreadSheetID = spreadSheetID;
+        this.sheets = google.sheets('v4');
     }
 
-    public getId() {
+    public getSpreadSheetID() {
         return this.spreadSheetID;
     }
 
@@ -37,26 +39,12 @@ export class SpreadSheetsApiController extends GoogleApiControllerTemplateBase {
 
     // Privates
 
-    private getDadosDaTabela(range: any) {
-        // const { google } = require('googleapis');
-        // const OAuth2 = google.auth.OAuth2;
-
-        // const oAuth2Client = new OAuth2(
-        //     "1092622474927-9dgqh9vmoq384jq8dd58p027hk6oa1fh.apps.googleusercontent.com",
-        //     "NXuw1CAF1upMYLCSdvB4xi-z",
-        //     "https://developers.google.com/oauthplayground"
-        // );
-
-        // oAuth2Client.setCredentials({
-        //     refresh_token: "1/cGTNyhlCKlehB0K-HN6yu4sAFu7L6pi90JBdhaHe5HeTrOX94FqpnK1iQB1KjPYJ"
-        // });
-
-
+    public getDadosDaTabela(range: any) {
         return new Promise((resolve: any, reject: any) => {
             this.sheets.spreadsheets.values.get({
-                auth: this.oAuth2Client,
-                spreadsheetId: this.spreadSheetID,
-                range: "A:A",
+                auth: this.getOAuth2Client(),
+                spreadsheetId: this.getSpreadSheetID(),
+                range: range,
             }, (err: any, res: any) => {
                 if (err) {
                     console.log("getDadosDaTabela >> " + err)
@@ -70,11 +58,11 @@ export class SpreadSheetsApiController extends GoogleApiControllerTemplateBase {
 
     }
 
-    private setNovaCelulaNaTabela(requestData: any) {
+    public batchUpdateNovaCelula(requestData: any) {
         return new Promise((resolve: any, reject: any) => {
             this.sheets.spreadsheets.values.batchUpdate(requestData, (err: any, res: any) => {
                 if (err) {
-                    console.log("setNovaCelulaNaTabela >> " + err)
+                    console.log("batchUpdateNovaCelula >> " + err)
                     reject('The API returned an error: ' + err);
                 }
                 else {
@@ -85,31 +73,17 @@ export class SpreadSheetsApiController extends GoogleApiControllerTemplateBase {
 
     }
 
-    // Public
-
-    public addicionarNovaCelulaCabecalhoNaColuna(dadoCelula: any) {
-        this.getDadosDaTabela("A:A").then((dadosTablela: any) => {
-
-            let quantElementos = dadosTablela.values.length;
-            console.log(" dadosTablela.values.length >> " + dadosTablela.values.length)
-
-            let spreadModel = new SpreadSheetsBatchUpdateModel(this.spreadSheetID, this.oAuth2Client);
-            
-            let posicao = this.columnToLetter(quantElementos + 1) + "1"; // ex: D1
-            spreadModel.adicionarNovaCelula(posicao, dadoCelula)
-
-            let model = spreadModel.getModel();
-            console.log(model)
-
-            this.setNovaCelulaNaTabela(model).then(() => {
-                console.log("FOI")
-            }).catch((err) => {
-                console.log(err)
-            })
-
-
-        }).catch((err: any) => {
-            console.error("inserir nova coluna na tabela : " + err)
+    public appendNovaCelula(requestData: any) {
+        return new Promise((resolve: any, reject: any) => {
+            this.sheets.spreadsheets.values.append(requestData, (err: any, res: any) => {
+                if (err) {
+                    console.log("appendNovaCelula >> " + err)
+                    reject('The API returned an error: ' + err);
+                }
+                else {
+                    resolve(res.data)
+                }
+            });
         })
     }
 

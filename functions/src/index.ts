@@ -55,11 +55,11 @@ exports.painelOnCreateFunction = functions.firestore.document('Painel/{painelId}
  * Setor censitario
  */
 
-// import * as setorCensitarioFunctions from './funcoes/setor_censitario_functions';
+import * as setorCensitarioFunctions from './funcoes/setor_censitario_functions';
 
 // exports.setorCensitarioOnUpdateFunction = functions.firestore.document('SetorCensitario/{setorCensitarioId}').onUpdate(setorCensitarioFunctions.iniciarSetorCensitarioOnUpdate);
 
-// exports.setorCensitarioOnCreateFunction = functions.firestore.document('SetorCensitario/{setorCensitarioId}').onCreate(setorCensitarioFunctions.iniciarOnCreate);
+exports.setorCensitarioOnCreateFunction = functions.firestore.document('SetorCensitario/{setorCensitarioId}').onCreate(setorCensitarioFunctions.iniciarOnCreate);
 
 // exports.setorCensitarioOnDeleteFunction = functions.firestore.document('SetorCensitario/{setorCensitarioId}').onDelete(setorCensitarioFunctions.iniciarOnDelete);
 

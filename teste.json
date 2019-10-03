@@ -1,39 +1,43 @@
 {
-  "content": [
-    {
-      "cabecalho": "cabeçalho"
-    },
-    {
-      "url": "Url imagem"
-    },
-    {
-      "titulo": "pdf titulo"
-    }
-  ],
-  "style": {
-    "header": {
-      "fontSize": 18,
-      "bold": true,
-      "alignment": "center"
-    },
-    "subheader": {
-      "fontSize": 12
-    },
-    "parametrost": {
-      "fontSize": 14
-    },
-    "superMargin": {
-      "margin": [
-        30,
-        0,
-        100,
-        10
+  "valueRange": {
+    "range": "'Página1'!A1:Z1001",
+    "majorDimension": "ROWS",
+    "values": [
+      [
+        "#",
+        "teste-abcd",
+        "Araguaina",
+        "Chapada de Areia",
+        "testeA",
+        "testeB"
       ],
-      "fontSize": 15
-    },
-    "nome02": {
-      "nome": "teste",
-      "outro": "outroteste"
-    }
+      [
+        "Area ( ex )",
+        "1111",
+        "5555",
+        "5555"
+      ],
+      [
+        "Area ( km²)",
+        "dasda",
+        "dasda",
+        "dasda"
+      ],
+      [
+        "Imagem da cidade ( ex )"
+      ],
+      [
+        "PainelB"
+      ],
+      [
+        "PainelD"
+      ],
+      [
+        "Url ( ex )",
+        "Link",
+        "Link",
+        "Link"
+      ]
+    ]
   }
 }
