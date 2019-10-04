@@ -70,10 +70,11 @@ export async function adicionarNovoSetorCensitarioNaTabelaPainel(setorCensitario
 
         let spreadModel = new GoogleApiController.SpreadSheetsBatchUpdateModel(relatorioController.getSpreadSheetID(), relatorioController.getOAuth2Client());
 
-        let posicao = relatorioController.columnToLetter(quantElementos + 1) + "1"; // ex: D1
-        console.log("posicao >> " + posicao)
+        let posicaoNome = relatorioController.columnToLetter(quantElementos + 1) + "1"; // ex: D1
+        let posicaoId = relatorioController.columnToLetter(quantElementos + 1) + "2";
 
-        spreadModel.adicionarNovaCelula(posicao, setorCensitarioSnap.data().nome)
+        spreadModel.adicionarNovaCelula(posicaoNome, setorCensitarioSnap.data().nome)
+        spreadModel.adicionarNovaCelula(posicaoId, setorCensitarioSnap.id)
 
         let model = spreadModel.getModel();
 

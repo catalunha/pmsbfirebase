@@ -21,18 +21,20 @@ export async function adicionarNovoTipoPainelNaTabela(painelSnap: any) {
 
     return await relatorioController.getDadosDaTabela("A:A").then((dadosTablela: any) => {
 
+        let spreadModel = new GoogleApiController.SpreadSheetsBatchUpdateModel(relatorioController.getSpreadSheetID(), relatorioController.getOAuth2Client());
+
         let quantElementos = dadosTablela.values.length;
-        let posicao = "A" + (quantElementos + 1); // ex: D1
+        let posicaoNome = "A" + (quantElementos + 1);
+        let posicaoId = "B" + (quantElementos + 1);
 
-        console.log(" dadosTablela.values.length >> " + dadosTablela.values.length)
-
-        let spreadModel = new GoogleApiController.SpreadSheetsAppendModel(relatorioController.getSpreadSheetID(), relatorioController.getOAuth2Client(), posicao);
-
-        spreadModel.adicionarNovaCelula(painelSnap.data().nome)
+        spreadModel.adicionarNovaCelula(posicaoNome, painelSnap.data().nome)
+        spreadModel.adicionarNovaCelula(posicaoId, painelSnap.id)
 
         let model = spreadModel.getModel();
 
-        relatorioController.appendNovaCelula(model).then(() => {
+        console.log(model)
+
+        relatorioController.batchUpdateNovaCelula(model).then(() => {
             console.log("FOI - appendNovaCelula")
         }).catch((err) => {
             console.log(err)

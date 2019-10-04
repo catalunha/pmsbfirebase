@@ -37,6 +37,27 @@ export class SpreadSheetsApiController extends GoogleApiControllerTemplateBase {
         return column;
     }
 
+    public async filtrarDadosPorPosicao(posicao: any, lista: any, valorFiltro: any) {
+        let i;
+        await lista.forEach((x: any, index: any) => {
+            if (x[posicao] == valorFiltro) {
+                return i = index;
+            }
+        });
+        return i
+    }
+
+    public async filtrarDadosDeLista(lista: any, valorFiltro: any) {
+        let i;
+        await lista.forEach((x: any, index: any) => {
+            if (x == valorFiltro) {
+                return i = index;
+            }
+        });
+        return i
+    }
+
+
     // Privates
 
     public getDadosDaTabela(range: any) {
@@ -56,6 +77,32 @@ export class SpreadSheetsApiController extends GoogleApiControllerTemplateBase {
             });
         })
 
+    }
+
+    public getTodoOsDadosTabela() {
+        return new Promise((resolve: any, reject: any) => {
+            this.sheets.spreadsheets.values.batchGetByDataFilter({
+                auth: this.getOAuth2Client(),
+                spreadsheetId: this.getSpreadSheetID(),
+                resource: {
+                    dataFilters: [
+                        {
+                            gridRange: {
+                                startRowIndex: 0
+                            }
+                        }
+                    ]
+                }
+            }, (err: any, res: any) => {
+                if (err) {
+                    console.log("getDadosDaTabela >> " + err)
+                    reject('The API returned an error: ' + err);
+                }
+                else {
+                    resolve(res.data)
+                }
+            });
+        })
     }
 
     public batchUpdateNovaCelula(requestData: any) {

@@ -2,15 +2,23 @@ import * as functions from 'firebase-functions';
 
 
 /**
+ * SetorCensitarioPainel
+ */
+
+import * as setorCensitarioPainelFunctions from './funcoes/setor_censitario_painel';
+
+
+exports.setorCensitarioPainelOnCreateFunction = functions.firestore.document('SetorCensitarioPainel/{SetorCensitarioPainelId}').onUpdate(setorCensitarioPainelFunctions.iniciarOnUpdate);
+
+/**
  * PAINEL
  */
 
-
-import * as painelFunctions from './funcoes/painel_function';
+// import * as painelFunctions from './funcoes/painel_function';
 
 // exports.painelOnUpdateFunction = functions.firestore.document('Painel/{painelId}').onUpdate(painelFunctions.iniciaOnUpdate);
 
-exports.painelOnCreateFunction = functions.firestore.document('Painel/{painelId}').onCreate(painelFunctions.iniciarOnCreate);
+// exports.painelOnCreateFunction = functions.firestore.document('Painel/{painelId}').onCreate(painelFunctions.iniciarOnCreate);
 
 // exports.painelOnDeleteFunction = functions.firestore.document('Painel/{painelId}').onDelete(painelFunctions.iniciarOnDelete);
 
@@ -55,11 +63,11 @@ exports.painelOnCreateFunction = functions.firestore.document('Painel/{painelId}
  * Setor censitario
  */
 
-import * as setorCensitarioFunctions from './funcoes/setor_censitario_functions';
+// import * as setorCensitarioFunctions from './funcoes/setor_censitario_functions';
 
 // exports.setorCensitarioOnUpdateFunction = functions.firestore.document('SetorCensitario/{setorCensitarioId}').onUpdate(setorCensitarioFunctions.iniciarSetorCensitarioOnUpdate);
 
-exports.setorCensitarioOnCreateFunction = functions.firestore.document('SetorCensitario/{setorCensitarioId}').onCreate(setorCensitarioFunctions.iniciarOnCreate);
+// exports.setorCensitarioOnCreateFunction = functions.firestore.document('SetorCensitario/{setorCensitarioId}').onCreate(setorCensitarioFunctions.iniciarOnCreate);
 
 // exports.setorCensitarioOnDeleteFunction = functions.firestore.document('SetorCensitario/{setorCensitarioId}').onDelete(setorCensitarioFunctions.iniciarOnDelete);
 

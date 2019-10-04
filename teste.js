@@ -23,40 +23,121 @@
 //    console.log(value[1].nome) 
 // })
 
-var a = new Date("Tue Sep 03 2019 20:34:43 GMT+0300 (UTC)");
-console.log(new Date(a - 6000).getHours())
-console.log(a.getDate() + " / " + a.getMonth() + " / " + a.getFullYear() + " - " + a.getHours() + ":" + a.getMinutes())
+// var a = new Date("Tue Sep 03 2019 20:34:43 GMT+0300 (UTC)");
+// console.log(new Date(a - 6000).getHours())
+// console.log(a.getDate() + " / " + a.getMonth() + " / " + a.getFullYear() + " - " + a.getHours() + ":" + a.getMinutes())
 
-function columnToLetter(column) {
-  var temp, letter = '';
-  while (column > 0) {
-    temp = (column - 1) % 26;
-    letter = String.fromCharCode(temp + 65) + letter;
-    column = (column - temp - 1) / 26;
-  }
-  return letter;
-}
+// function columnToLetter(column) {
+//   var temp, letter = '';
+//   while (column > 0) {
+//     temp = (column - 1) % 26;
+//     letter = String.fromCharCode(temp + 65) + letter;
+//     column = (column - temp - 1) / 26;
+//   }
+//   return letter;
+// }
 
-function letterToColumn(letter) {
-  var column = 0, length = letter.length;
-  for (var i = 0; i < length; i++) {
-    column += (letter.charCodeAt(i) - 64) * Math.pow(26, length - i - 1);
-  }
-  return column;
-}
+// function letterToColumn(letter) {
+//   var column = 0, length = letter.length;
+//   for (var i = 0; i < length; i++) {
+//     column += (letter.charCodeAt(i) - 64) * Math.pow(26, length - i - 1);
+//   }
+//   return column;
+// }
 
-console.log(letterToColumn("A"))
+// console.log(letterToColumn("A"))
+
+
 
 var a = {
-  values: [
-    [
-      "Variáveis: ",
-      "teste-abcd",
-      "Araguaina",
-      "Chapada de Areia"
-    ]
+  "spreadsheetId": "1lGwxBTGXd55H6QfnJ_7WKuNBJi16dC_J6PBk0QR0viA",
+  "valueRanges": [
+    {
+      "valueRange": {
+        "range": "'Página1'!A1:AA1003",
+        "majorDimension": "ROWS",
+        "values": [
+          [
+            "#",
+            "id",
+            "teste-abcd",
+            "testeA",
+            "Araguaina",
+            "Chapada de Areia",
+            "testeB",
+            "setorTeste"
+          ],
+          [
+            "id",
+            "idsetor",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "LcyvPGkVkGleX7OGzWPu"
+          ],
+          [
+            "iditem",
+            "#"
+          ],
+          [
+            "Numero",
+            "",
+            "1111",
+            "5555",
+            "5555",
+            "5555"
+          ],
+          [
+            "Texto",
+            "",
+            "dasda",
+            "dasda",
+            "dasda",
+            "Text"
+          ],
+          [
+            "Imagem"
+          ],
+          [
+            "Arquivo",
+            "",
+            "Link do arquivo",
+            "Link",
+            "Link",
+            "Link"
+          ],
+          [
+            "painelTesteA",
+            "YkSw64ANUCj333d0kR79"
+          ]
+        ]
+      },
+      "dataFilters": [
+        {
+          "gridRange": {
+            "startRowIndex": 0
+          }
+        }
+      ]
+    }
   ]
 }
-console.log(a["values"][0].length)
+
+function filtrar(fieldId, lista) {
+  let i;
+  lista.forEach((x, index) => {
+    if (x == fieldId) {
+      return i = index + 1;
+    }
+  });
+  return i
+}
+
+var b = (a["valueRanges"][0]["valueRange"]["values"][0])
+var fieldId = "Numero";
+
+console.log(filtrar("id", b))
 
 
