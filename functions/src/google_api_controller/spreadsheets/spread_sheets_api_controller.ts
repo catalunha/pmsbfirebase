@@ -37,24 +37,25 @@ export class SpreadSheetsApiController extends GoogleApiControllerTemplateBase {
         return column;
     }
 
-    public async filtrarDadosPorPosicao(posicao: any, lista: any, valorFiltro: any) {
-        let i;
-        await lista.forEach((x: any, index: any) => {
-            if (x[posicao] == valorFiltro) {
-                return i = index;
-            }
-        });
-        return i
+    public filtrarDadosPorPosicao(posicao: any, lista: any, valorFiltro: any) {
+        return new Promise((resolve, reject) => {
+            lista.forEach((x: any, index: any) => {
+                if (x[posicao] == valorFiltro) {
+                    resolve({ index:index , valor: x })
+                }
+            });
+        })
     }
 
-    public async filtrarDadosDeLista(lista: any, valorFiltro: any) {
-        let i;
-        await lista.forEach((x: any, index: any) => {
-            if (x == valorFiltro) {
-                return i = index;
-            }
-        });
-        return i
+    public filtrarDadosDeLista(lista: any, valorFiltro: any) {
+        return new Promise((resolve, reject) => {
+            lista.forEach((x: any, index: any) => {
+                if (x == valorFiltro) {
+                    resolve({ index: index, valor: x })
+                }
+            });
+        })
+
     }
 
 
@@ -68,7 +69,7 @@ export class SpreadSheetsApiController extends GoogleApiControllerTemplateBase {
                 range: range,
             }, (err: any, res: any) => {
                 if (err) {
-                    console.log("getDadosDaTabela >> " + err)
+                    // console.log("getDadosDaTabela >> " + err)
                     reject('The API returned an error: ' + err);
                 }
                 else {
@@ -109,7 +110,7 @@ export class SpreadSheetsApiController extends GoogleApiControllerTemplateBase {
         return new Promise((resolve: any, reject: any) => {
             this.sheets.spreadsheets.values.batchUpdate(requestData, (err: any, res: any) => {
                 if (err) {
-                    console.log("batchUpdateNovaCelula >> " + err)
+                    // console.log("batchUpdateNovaCelula >> " + err)
                     reject('The API returned an error: ' + err);
                 }
                 else {
@@ -124,7 +125,7 @@ export class SpreadSheetsApiController extends GoogleApiControllerTemplateBase {
         return new Promise((resolve: any, reject: any) => {
             this.sheets.spreadsheets.values.append(requestData, (err: any, res: any) => {
                 if (err) {
-                    console.log("appendNovaCelula >> " + err)
+                    // console.log("appendNovaCelula >> " + err)
                     reject('The API returned an error: ' + err);
                 }
                 else {

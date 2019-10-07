@@ -1,6 +1,6 @@
 
 # Tipos:
-
+    
     - texto
 
     - numero

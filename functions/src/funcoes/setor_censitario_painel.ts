@@ -20,27 +20,17 @@ export async function adicionarNovaCelulaTipoSetorCensitarioPainel(painelData: a
     return await relatorioController.getTodoOsDadosTabela().then(async (dadosTablela: any) => {
 
         let lista = dadosTablela["valueRanges"][0]["valueRange"]["values"];
-        ///FIXME: erro na filtragem dos dados, esta retornando nada 
+
         // Filtra a coluna onde esta o setor
-        let colunaPos: any;
-        await lista.forEach((x: any, index: any) => {
-            if (x[2] == setorCensitario.id) {
-                return colunaPos = index;
-            }
-        });
-        console.log(colunaPos)
-        // Filtra a linha onde esta o painel tipo
-
         let linhaPos: any;
-        await lista[colunaPos].forEach((x: any, index: any) => {
-            if (x == setorCensitario.id) {
-                return linhaPos = index;
-            }
-        });
-        console.log(linhaPos)
+        await relatorioController.filtrarDadosPorPosicao(1, lista, painel.id).then(data => linhaPos = data)
 
-        let colPosTab = await relatorioController.columnToLetter(colunaPos + 1)
-        let linPosTab = await linhaPos + 1
+        // Filtra a linha onde esta o painel tipo
+        let colunaPos: any;
+        await relatorioController.filtrarDadosDeLista(lista[1], setorCensitario.id).then(data => colunaPos = data)
+
+        let colPosTab = await relatorioController.columnToLetter(colunaPos.index + 1)
+        let linPosTab = await linhaPos.index + 1
 
         let spreadModel = new GoogleApiController.SpreadSheetsBatchUpdateModel(relatorioController.getSpreadSheetID(), relatorioController.getOAuth2Client());
 
@@ -60,11 +50,13 @@ export async function adicionarNovaCelulaTipoSetorCensitarioPainel(painelData: a
                 break;
         }
 
-        spreadModel.adicionarNovaCelula(colPosTab + linPosTab, valor)
+        // console.log(" POS : " + await colPosTab + await linPosTab)
+
+        spreadModel.adicionarNovaCelula(await colPosTab + await linPosTab, await valor)
 
         let model = spreadModel.getModel();
 
-        relatorioController.appendNovaCelula(model).then(() => {
+        relatorioController.batchUpdateNovaCelula(model).then(() => {
             console.log("FOI - appendNovaCelula")
         }).catch((err) => {
             console.log(err)
