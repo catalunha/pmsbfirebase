@@ -1,52 +1,51 @@
-
-    ### resposta01 :
+### resposta01 :
 
         Resposta de um questionário aplicado
 
-    ### controle01 :
+### controle01 :
 
         Total destinatário
 
-    ### controle02 :
+### controle02 :
 
     Individual destinatário
 
-    ### controle03 :
+### controle03 :
 
         Total remetente
 
-    ### controle04 :
+### controle04 :
         
         Individual remetente
 
-    ### painel01 : *
+### painel01 : *
         
         Individual
 
-    ### painel02 : *
+### painel02 : *
         
         Comparativo
 
-    ### questionario01 :
+### questionario01 :
 
         Todas os questionários
 
-    ### questionario02 :
+### questionario02 :
 
         Perguntas do questionario
 
-    ### administracao01 :
+### administracao01 :
 
         Todos
 
-    ### administracao02 :
+### administracao02 :
 
         Individual
 
-    ### comunicacao01:
+### comunicacao01:
 
         Todas em edicao
 
-    ### comunicacao02:
+### comunicacao02:
 
         Todas encerradas
