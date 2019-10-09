@@ -1,52 +1,41 @@
 
-    ### resposta01 :
+### resposta01 : ( Pronto )
 
-        Resposta de um questionário aplicado
+Resposta de um questionário aplicado
 
-    ### controle01 :
+### controle01 : ( Em producao )
 
-        Total destinatário
+Total destinatário
 
-    ### controle02 :
+### controle02 : ( Em producao )
 
-    Individual destinatário
+Individual destinatário
 
-    ### controle03 :
+### controle03 : ( Em producao )
 
-        Total remetente
+Total remetente
 
-    ### controle04 :
-        
-        Individual remetente
+### controle04 : ( Em producao )
 
-    ### painel01 : *
-        
-        Individual
+Individual remetente
 
-    ### painel02 : *
-        
-        Comparativo
+z
+### questionario01 : (  )
 
-    ### questionario01 :
+Todas os questionários
 
-        Todas os questionários
+### questionario02 :  (  )
 
-    ### questionario02 :
+Perguntas do questionario
 
-        Perguntas do questionario
+### administracao01 (planilha) :  (  )
 
-    ### administracao01 :
+Todos
+ 
+### comunicacao01:  (  )
 
-        Todos
+Todas em edicao
 
-    ### administracao02 :
+### comunicacao02:  (  )
 
-        Individual
-
-    ### comunicacao01:
-
-        Todas em edicao
-
-    ### comunicacao02:
-
-        Todas encerradas
+Todas encerradas

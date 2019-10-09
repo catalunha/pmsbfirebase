@@ -37,16 +37,27 @@ export async function adicionarNovaCelulaTipoSetorCensitarioPainel(painelData: a
         let valor;
 
         switch (painel.tipo) {
-            case "texto" || "numero" || "booleano":
+            case "texto":
                 valor = painelData.valor;
                 break;
+            case "numero":
+                valor = painelData.valor;
+                break;
+            case "booleano":
+                if (painelData.valor) {
+                    valor = '=IMAGE("https://firebasestorage.googleapis.com/v0/b/pmsb-22-to.appspot.com/o/ok.jpeg?alt=media&token=7e520296-c8ba-4d96-9ece-03d58706d815")';
+                } else {
+                    valor = '=IMAGE("https://firebasestorage.googleapis.com/v0/b/pmsb-22-to.appspot.com/o/x.jpeg?alt=media&token=79c0df4a-d02e-4d84-930f-7cefa7388cda")'
+                }
+                break;
             case "urlarquivo":
-                valor = '=HIPERLINK(/"' + painelData.valor + '";"Link do arquivo")';
+                valor = '=HIPERLINK("' + painelData.valor + '";"Link do arquivo")';
                 break;
             case "urlimagem":
-                valor = '=HIPERLINK(/"' + painelData.valor + '";IMAGE(/"' + painelData.valor + '/"))';
+                valor = '=HIPERLINK("' + painelData.valor + '";IMAGE("' + painelData.valor + '"))';
                 break;
             default:
+                console.log("adicionarNovaCelulaTipoSetorCensitarioPainel :: Nenhum tipo encontrado")
                 break;
         }
 
