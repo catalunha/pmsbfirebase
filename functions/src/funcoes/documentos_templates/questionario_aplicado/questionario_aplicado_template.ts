@@ -1,8 +1,5 @@
 import { Timestamp } from "@google-cloud/firestore";
 import * as moment from "moment";
-// // let moment = require('mom');
-
-// import { Timestamp } from "@google-cloud/firestore";
 
 export default class RelatorioQuestionarioAplicadoTemplate {
 
