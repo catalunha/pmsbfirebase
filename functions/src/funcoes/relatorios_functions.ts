@@ -66,6 +66,24 @@ export function criarPdf(snapId: any, relatorioData: any) {
             case "painel02":
                 gerarRelatorioControle02(snapId, relatorioData, resolve, reject);
                 break;
+            case "questionario01":
+                gerarRelatorioControle02(snapId, relatorioData, resolve, reject);
+                break;
+            case "questionario02":
+                gerarRelatorioControle02(snapId, relatorioData, resolve, reject);
+                break;  
+            case "administracao01":
+                gerarRelatorioControle02(snapId, relatorioData, resolve, reject);
+                break;
+            case "administracao02":
+                gerarRelatorioControle02(snapId, relatorioData, resolve, reject);
+                break;
+            case "comunicacao01":
+                gerarRelatorioControle02(snapId, relatorioData, resolve, reject);
+                break;
+            case "comunicacao01":
+                gerarRelatorioControle02(snapId, relatorioData, resolve, reject);
+                break;
             default:
                 console.log('Nenhum tipo de relatorio encontrado')
                 break;

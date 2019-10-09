@@ -19,7 +19,12 @@ Total remetente
 
 Individual remetente
 
-z
+### painel01 (planilha) : ( Quase Pronto )
+
+Falta
+    - onupdate nos nomes do painel e do setor
+    - on delete line
+
 ### questionario01 : (  )
 
 Todas os questionários
