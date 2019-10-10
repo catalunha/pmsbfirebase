@@ -26,14 +26,23 @@ export function iniciarGeracaoRelatorio(snapRef: any, uploadSnapId: any, relator
         const file = bucket.file("relatorioPdfMake/" + uploadSnapId + '.pdf');
 
         return file.save(bufferData, {
+
             contentType: "application/pdf",
+
         }).then(() => {
+
             return snapRef.ref.set({
                 pdfGerado: true,
                 pdfGerar: false,
             }, { merge: true });
+
+        }).catch((err: any) => {
+
+            console.log("savePdf Error: " + err)
+        
         })
-    }).catch(() => {
+    
+    }).catch((err) => {
         console.log("ERROR")
     }) : 0;
 }
@@ -67,11 +76,11 @@ export function criarPdf(snapId: any, relatorioData: any) {
                 gerarRelatorioControle02(snapId, relatorioData, resolve, reject);
                 break;
             case "questionario01":
-                gerarRelatorioControle02(snapId, relatorioData, resolve, reject);
+                gerarRelatorioControle01(snapId, relatorioData, resolve, reject);
                 break;
             case "questionario02":
-                gerarRelatorioControle02(snapId, relatorioData, resolve, reject);
-                break;  
+                gerarRelatorioQuestionario02(snapId, relatorioData, resolve, reject);
+                break;
             case "administracao01":
                 gerarRelatorioControle02(snapId, relatorioData, resolve, reject);
                 break;
@@ -127,6 +136,26 @@ export function gerarRelatorioControle02(snapId: any, relatorioData: any, resolv
     relatorioControle02.gerarDocDefinitionContent(relatorioData, snapId).then(async (docDefinition) => {
         gerarPdfDocDefinition(docDefinition, resolve)
     }).catch(() => {
+        reject();
+    })
+}
+
+export function gerarRelatorioQuestionario01(snapId: any, relatorioData: any, resolve: any, reject: any) {
+    let relatorioQuestionario01 = new Relatorios.RelatorioQuestionario01Controller()
+    relatorioQuestionario01.gerarDocDefinitionContent(relatorioData, snapId).then(async (docDefinition) => {
+        gerarPdfDocDefinition(docDefinition, resolve)
+    }).catch(() => {
+        console.log("Err: gerarRelatorioQuestionario01 ")
+        reject();
+    })
+}
+
+export function gerarRelatorioQuestionario02(snapId: any, relatorioData: any, resolve: any, reject: any) {
+    let relatorioQuestionario02 = new Relatorios.RelatorioQuestionario02Controller()
+    relatorioQuestionario02.gerarDocDefinitionContent(relatorioData, snapId).then(async (docDefinition) => {
+        gerarPdfDocDefinition(docDefinition, resolve)
+    }).catch(() => {
+        console.log("Err: gerarRelatorioQuestionario02 ")
         reject();
     })
 }

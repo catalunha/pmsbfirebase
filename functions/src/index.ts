@@ -35,16 +35,16 @@ import * as functions from 'firebase-functions';
  * Documentos
  */
 
-
 import * as relatorioFunctions from './funcoes/relatorios_functions';
 
-exports.relatorioPdfMakeOnUpdateFunction = functions.firestore.document('RelatorioPdfMake/{RelatorioPdfMakeId}').onUpdate(relatorioFunctions.iniciaOnUpdate);
+exports.gerarRelatorioPdfOnUpdateFunction = functions.firestore.document('RelatorioPdfMake/{RelatorioPdfMakeId}').onUpdate(relatorioFunctions.iniciaOnUpdate);
 
-exports.relatorioPdfMakeOnCreateFunction = functions.firestore.document('RelatorioPdfMake/{RelatorioPdfMakeId}').onCreate(relatorioFunctions.iniciaOnCreate);
+exports.gerarRelatorioPdfOnCreateFunction = functions.firestore.document('RelatorioPdfMake/{RelatorioPdfMakeId}').onCreate(relatorioFunctions.iniciaOnCreate);
 
-// /**
-//  * Eixo
-//  */
+/**
+* Eixo
+*/
+
 // import * as eixoFuntion from './funcoes/eixo_function';
 
 // exports.eixoOnUpdateFuntion = functions.firestore.document('Eixo/{eixoId}').onUpdate(eixoFuntion.iniciarUpdateCollectionEixo);

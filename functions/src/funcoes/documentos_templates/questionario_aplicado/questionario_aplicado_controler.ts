@@ -26,8 +26,6 @@ export class RelatorioQuestionarioAplicadoController {
                         console.log('Error getting documents : PerguntaAplicada ', err)
                     })
                 }
-
-
             }).catch((err: any) => {
                 console.log('Error getting documents :' + relatorioData.collection, err)
             })
