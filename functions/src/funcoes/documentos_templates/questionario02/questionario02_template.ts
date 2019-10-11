@@ -1,5 +1,3 @@
-//import { Timestamp } from "@google-cloud/firestore";
-// import * as moment from "moment";
 
 export default class Questionario02Template {
 
@@ -23,12 +21,7 @@ export default class Questionario02Template {
                 bold: true,
             },
         },
-        footer: (currentPage: any, pageCount: any) => { return { text: currentPage.toString() + ' de ' + pageCount, alignment: 'right', margin: [0, 0, 40, 50], color: "gray" } },
-        header: (currentPage: any, pageCount: any, pageSize: any) => {
-            return [
-                { text: this.nomeQuest, italics: true, color: 'gray', alignment: 'right', margin: [0, 10, 10, 0] },
-            ]
-        }
+        footer: (currentPage: any, pageCount: any) => { return { text: this.nomeQuest + " - " + currentPage.toString() + ' de ' + pageCount, alignment: 'right', margin: [10, 0, 35, 0], color: "gray" } },
     }
 
     public addContentElement(contentElement: any) {
@@ -58,7 +51,7 @@ export default class Questionario02Template {
             style: 'header',
             tocItem: true,
             tocStyle: { bold: true },
-            tocMargin: [0, 50, 0, 0],
+            tocMargin: [0, 30, 0, 0],
             tocNumberStyle: { bold: true },
         })
 
@@ -112,8 +105,8 @@ export default class Questionario02Template {
             table: {
                 headerRows: 1,
                 body: [
+                    [{ text: ' ', style: 'tableHeader', bold: true }, { text: ' ', style: 'tableHeader' }],
                     [{ text: 'ID:', style: 'tableHeader', bold: true }, { text: perguntaId, style: 'tableHeader' }],
-                    [{ text: 'Tipo:', style: 'tableHeader', bold: true }, { text: perguntaData.tipo.nome, style: 'tableHeader' }],
                 ]
             },
             layout: 'noBorders'
@@ -140,7 +133,9 @@ export default class Questionario02Template {
 
         content.table.body.push(requesitos)
 
-        content.table.body.push([{ text: 'Texto:', style: 'tableHeader', bold: true }, { text: perguntaData.textoMarkdown, style: 'tableHeader' }])
+        content.table.body.push([{ text: 'Pergunta:', style: 'tableHeader', bold: true }, { text: perguntaData.textoMarkdown, style: 'tableHeader' }])
+
+        content.table.body.push([{ text: 'Tipo:', style: 'tableHeader', bold: true }, { text: perguntaData.tipo.nome, style: 'tableHeader' }])
 
         // multiplas escolhas
 
@@ -152,10 +147,19 @@ export default class Questionario02Template {
                 { ul: [] }
             ]
             Object.entries(perguntaData.escolhas).sort((a: any, b: any) => { return a[1].ordem - b[1].ordem }).forEach((value: any) => {
-                multiplas_escolhas[1]['ul'].push({ text: value[1].texto })
+                if (perguntaData.tipo.id == "escolhamultipla") {
+                    multiplas_escolhas[1]['ul'].push({ text: "[  ] " + value[1].texto })
+                } else if (perguntaData.tipo.id == "escolhaunica") {
+                    multiplas_escolhas[1]['ul'].push({ text: "(  ) " + value[1].texto })
+                } else {
+                    multiplas_escolhas[1]['ul'].push({ text: value[1].texto })
+                }
             })
             content.table.body.push(multiplas_escolhas)
+        } else {
+            content.table.body.push([{ text: 'Resposta:', style: 'tableHeader', bold: true }, { text: "  ", style: 'tableHeader' }])
         }
+
 
 
         this.addContentElement(content)
