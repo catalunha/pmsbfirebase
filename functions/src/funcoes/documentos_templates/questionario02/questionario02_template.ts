@@ -3,9 +3,9 @@
 
 export default class Questionario02Template {
 
-    nomeQuest:any;
+    public nomeQuest: any;
 
-    constructor(nomeQuest:any) {
+    constructor(nomeQuest: any) {
         this.nomeQuest = nomeQuest
     }
 
@@ -23,11 +23,10 @@ export default class Questionario02Template {
                 bold: true,
             },
         },
-        footer: function(currentPage:any, pageCount:any) { return { text:  currentPage.toString() + ' de ' + pageCount, alignment: 'right' ,margin:[0,0,40,50] , color:"gray"} },
-        header: function(currentPage:any, pageCount:any, pageSize:any) {
+        footer: (currentPage: any, pageCount: any) => { return { text: currentPage.toString() + ' de ' + pageCount, alignment: 'right', margin: [0, 0, 40, 50], color: "gray" } },
+        header: (currentPage: any, pageCount: any, pageSize: any) => {
             return [
-              { text: this.nomeQuest, alignment: 'right' ,margin:[0,25,40,10] , color:"gray"},
-              { canvas: [ { type: 'rect', x: 10, y: 32, w: pageSize.width - 10, h: 60 } ] }
+                { text: this.nomeQuest, italics: true, color: 'gray', alignment: 'right', margin: [0, 10, 10, 0] },
             ]
         }
     }
@@ -47,27 +46,15 @@ export default class Questionario02Template {
             toc: {
                 title: { text: 'RELATÓRIO QUESTIONÁRIO\n' + nome, style: 'header' },
                 margin: [0, 150, 0, 0],
-                //textStyle: {italics: true},
                 numberStyle: { bold: true },
             },
         })
     }
 
     public async adicionarCabecalhoQuestionario(questData: any, questId: any) {
-        console.log(questData)
-        console.log(JSON.stringify(questData))
-
-        // this.addContentElement({
-        //     toc: {
-        //         title: { text: '\nQuestionário ' + questData.ordem + ' - ' + questData.nome, style: 'header' },
-        //         margin: [0, 150, 0, 0],
-        //         //textStyle: {italics: true},
-        //         numberStyle: { bold: true },
-        //     },
-        // })
 
         this.addContentElement({
-            text: '\nQuestionário ' + questData.ordem,
+            text: '\nQuestionário ' + questData.ordem + ' - ' + questData.nome,
             style: 'header',
             tocItem: true,
             tocStyle: { bold: true },
@@ -139,17 +126,21 @@ export default class Questionario02Template {
             { text: 'Nenhum', style: 'tableHeader' },
         ]
 
-        if (perguntaData.requesitos != null && Object.entries(perguntaData.requesitos).length > 0) {
+        if (perguntaData.requisitos != null && Object.entries(perguntaData.requisitos).length > 0) {
+            console.log("Here")
             requesitos = [
                 { text: 'Requisitos:', style: 'tableHeader', bold: true },
                 { ul: [] }
             ]
-            Object.entries(perguntaData.escolhas).sort((a: any, b: any) => { return a[1].ordem - b[1].ordem }).forEach((value: any) => {
+            Object.entries(perguntaData.requisitos).forEach((value: any) => {
                 requesitos[1]['ul'].push({ text: value[0] })
             })
+
         }
 
         content.table.body.push(requesitos)
+
+        content.table.body.push([{ text: 'Texto:', style: 'tableHeader', bold: true }, { text: perguntaData.textoMarkdown, style: 'tableHeader' }])
 
         // multiplas escolhas
 
@@ -166,7 +157,6 @@ export default class Questionario02Template {
             content.table.body.push(multiplas_escolhas)
         }
 
-        content.table.body.push([{ text: 'Texto:', style: 'tableHeader', bold: true }, { text: perguntaData.textoMarkdown, style: 'tableHeader' }])
 
         this.addContentElement(content)
     }

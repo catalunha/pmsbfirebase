@@ -12,9 +12,6 @@ export class RelatorioQuestionario02Controller {
     public gerarDocDefinitionContent(relatorioData: any, relatorioId: any) {
         return new Promise((resolve: any, reject: any) => {
 
-            // DatabaseReferences.eixoRef.doc(relatorioData.document).get().then((data: any) => {
-            // })
-
             let questionarioRef = DatabaseReferences.questionarioRef.doc(relatorioData.document)
             questionarioRef.get().then((questionarioAplicadoData: any) => {
                 if (!questionarioAplicadoData.exists) {
@@ -31,7 +28,6 @@ export class RelatorioQuestionario02Controller {
                         console.log('Error getting documents : PerguntaAplicada ', err)
                     })
                 }
-
 
             }).catch((err: any) => {
                 console.log('Error getting documents :' + relatorioData.collection, err)
