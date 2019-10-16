@@ -14,7 +14,6 @@ export default class Questionario02Template {
                 fontSize: 16,
                 bold: true,
                 alignment: 'center',
-
             },
             subheader: {
                 fontSize: 14,
@@ -42,6 +41,7 @@ export default class Questionario02Template {
                 numberStyle: { bold: true },
             },
         })
+        this.addContentElement({ text: '\n\n_______________________________________________________________________________________________\n\n', bold: true })
     }
 
     public async adicionarCabecalhoQuestionario(questData: any, questId: any) {
@@ -159,8 +159,6 @@ export default class Questionario02Template {
         } else {
             content.table.body.push([{ text: 'Resposta:', style: 'tableHeader', bold: true }, { text: "  ", style: 'tableHeader' }])
         }
-
-
 
         this.addContentElement(content)
     }

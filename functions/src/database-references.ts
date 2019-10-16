@@ -25,6 +25,9 @@ export default class DatabaseReferences {
     public static perguntaRef = databaseReferences.collection('Pergunta');
     public static eixoRef = databaseReferences.collection('Eixo');
 
+    public static controleTarefaRef = databaseReferences.collection('ControleTarefa');
+    public static controleAcaoRef = databaseReferences.collection('ControleAcao');
+
 
     public static atualizarNomeDeCollectionEmOutrasCollections(collectionNome: any, whereRefId: any, novaRefId: any, updateJsonData: any) {
         this.db.collection(collectionNome).where(whereRefId, '==', novaRefId).get().then(async (dadosFiltrado: any) => {
