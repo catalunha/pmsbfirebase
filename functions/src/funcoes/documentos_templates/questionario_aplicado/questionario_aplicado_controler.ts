@@ -6,20 +6,21 @@ export class RelatorioQuestionarioAplicadoController {
     private questionarioRelatorio: RelatorioQuestionarioAplicadoTemplate;
 
     constructor() {
-        this.questionarioRelatorio = new RelatorioQuestionarioAplicadoTemplate();
+        this.questionarioRelatorio = new RelatorioQuestionarioAplicadoTemplate("");
     }
 
     public gerarDocDefinitionContent(relatorioData: any, relatorioId: any) {
         return new Promise(async (resolve: any, reject:any) => {
             // PEGAR O DOC DO QUESTIONARIO APLICADO
             let questionarioRef = DatabaseReferences.db.collection(relatorioData.collection).doc(relatorioData.document)
+
             questionarioRef.get().then((questionarioAplicadoData: any) => {
                 if (!questionarioAplicadoData.exists) {
                     console.log('No such document! : questionarioAplicadoData');
                     reject()
                 } else {
+                    this.questionarioRelatorio = new RelatorioQuestionarioAplicadoTemplate(questionarioAplicadoData.data().nome);
                     // PEGAR A LISTA DE PERGUNTAS DO QUESTIONARIO APLICADO
-
                     DatabaseReferences.PerguntaAplicadaRef.where("questionario.id", '==', questionarioAplicadoData.id).orderBy("ordem", "asc").get().then(async (perguntas: any) => {
                         this.prencherRelatorio(resolve, perguntas, questionarioAplicadoData.data(), questionarioAplicadoData.id)
                     }).catch((err: any) => {

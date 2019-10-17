@@ -109,7 +109,7 @@ export function gerarPdfDocDefinition(docDefinition: any, resolve: any) {
 }
 
 export function gerarRelatorioResposta01(snapId: any, relatorioData: any, resolve: any, reject: any) {
-    let relatorioQuestionarioAplicado = new Relatorios.RelatorioQuestionarioAplicadoController()
+    let relatorioQuestionarioAplicado = new Relatorios.Relatorioresposta01Controller()
     relatorioQuestionarioAplicado.gerarDocDefinitionContent(relatorioData, snapId).then(async (docDefinition) => {
         gerarPdfDocDefinition(docDefinition, resolve)
         // var pdfDoc = await pdfMake.createPdf(docDefinition, options);

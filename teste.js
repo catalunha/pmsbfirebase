@@ -1,24 +1,24 @@
-let teste = {
-    valor01: {
-        nome: 1
-    },
-    valor02: {
-        nome: 3
-    }, valor03: {
-        nome: 2
-    },
-    valor04: {
-        nome: 6
-    },valor05: {
-        nome: 1
-    }
-}
+// let teste = {
+//     valor01: {
+//         nome: 1
+//     },
+//     valor02: {
+//         nome: 3
+//     }, valor03: {
+//         nome: 2
+//     },
+//     valor04: {
+//         nome: 6
+//     },valor05: {
+//         nome: 1
+//     }
+// }
 
-console.log("size:" + Object.entries(teste).length)
+// console.log("size:" + Object.entries(teste).length)
 
-let i;
+// let i;
 
-Object.entries(teste).forEach(data=>{console.log(data)})
+// Object.entries(teste).forEach(data=>{console.log(data)})
 
 
 
@@ -146,3 +146,24 @@ Object.entries(teste).forEach(data=>{console.log(data)})
 // console.log(filtrar("id", b))
 
 
+function teste(){
+    let content = {
+        style: 'tableExample',
+        table: {
+            headerRows: 1,
+            body: [
+               
+            ]
+        },
+        layout: 'noBorders'
+    }    
+    console.log("01 " + JSON.stringify(content))
+    alterarValor(content)
+    console.log("02" + JSON.stringify(content))
+}
+
+function alterarValor(content){
+    content.table.body.push([{ text: 'ID:', style: 'tableHeader', bold: true }, { text: "perguntaId", style: 'tableHeader' }])
+}
+
+teste()

@@ -3,8 +3,10 @@ import * as moment from "moment";
 
 export default class RelatorioQuestionarioAplicadoTemplate {
 
-    constructor() {
+    public nomeQuestionario:any;
 
+    constructor(nomeQuestionario:any) {
+        this.nomeQuestionario = nomeQuestionario;
     }
 
     private tabela: any = {
@@ -26,14 +28,14 @@ export default class RelatorioQuestionarioAplicadoTemplate {
                 return (i === 0 || i === node.table.body.length) ? 'black' : 'black';
             },
             paddingRight: function (i: any, node: any) {
-                return (i === node.table.widths.length - 1) ? 150 : 150;
+                return (i === node.table.widths.length - 1) ? 10 : 10;
             }
         }
     }
 
     private docDefinition: any = {
         content: [],
-        footer: function (currentPage:any, pageCount:any) { return { text: currentPage.toString() + ' de ' + pageCount, alignment: 'right', margin: [0, 0, 40, 50], color: "gray" } },
+        footer: (currentPage:any, pageCount:any)=>{ return { text: this.nomeQuestionario + " - " + currentPage.toString() + ' de ' + pageCount, alignment: 'right', margin: [0, 0, 40, 50], color: "gray" } },
         header: function (currentPage:any, pageCount:any, pageSize:any) {
             // you can apply any logic and return any valid pdfmake element
             return [
