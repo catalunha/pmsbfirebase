@@ -73,7 +73,7 @@ export default class Resposta01Template {
 
     public adicionarTabelaAoDocDefinition() {
         this.addContentElement({ text: '\n\n_______________________________________________________________________________________________\n\n', bold: true })
-        this.addContentElement({ text: 'Resumo:\n', margin: [0, 10, 0, 5] ,fontSize:14, bold:true })
+        this.addContentElement({ text: 'Resumo:\n', margin: [0, 10, 0, 5], fontSize: 14, bold: true })
         this.addContentElement(this.tabela)
     }
 
@@ -114,7 +114,7 @@ export default class Resposta01Template {
         timestamp.setHours(timestamp.getHours() - 3);
         let horario = timestamp.toLocaleTimeString();
         let data = moment(timestamp.toLocaleDateString(), "YYYY-MM-DD").utc().format("DD-MM-YYYY").toString();
-        
+
         this.addContentElement({
             style: 'tableExample',
             table: {
@@ -141,6 +141,7 @@ export default class Resposta01Template {
 
 
     public adicionarPergunta(perguntaData: any, perguntaId: any) {
+
         this.addContentElement({ text: '\n_______________________________________________________________________________________________\n\n', color: 'gray' })
 
         this.addContentElement({
@@ -166,40 +167,36 @@ export default class Resposta01Template {
             layout: 'noBorders'
         }
 
-
-        let temPendencias = perguntaData.temPendencias ? "Tem pendência" : "Não tem pendência";
-        let foiRespondida = perguntaData.foiRespondida ? "Foi respondida" : "Não foi respondida";
-        let temRespostaValida = perguntaData.temRespostaValida ? "Tem resposta válida" : "Não tem resposta válida";
-
-        content.table.body.push([{ text: 'Pendência:', style: 'tableHeader', bold: true }, { text: temPendencias, style: 'tableHeader' }])
-        content.table.body.push([{ text: 'Respondida:', style: 'tableHeader', bold: true }, { text: foiRespondida, style: 'tableHeader' }])
-        content.table.body.push([{ text: 'Resposta válida:', style: 'tableHeader', bold: true }, { text: temRespostaValida, style: 'tableHeader' }])
-
         //Requisitos
-
         let requesitos: any = [
-            { text: 'Requisitos:', style: 'tableHeader', bold: true },
-            { text: 'Nenhum', style: 'tableHeader' },
+            { text: 'Requisitos:', style: 'tableHeader', bold: true, color: "gray", fontSize: 9 },
+            { text: 'Nenhum', style: 'tableHeader', color: "gray", fontSize: 9 },
         ]
 
         if (perguntaData.requisitos != null && Object.entries(perguntaData.requisitos).length > 0) {
             console.log("Here")
             requesitos = [
-                { text: 'Requisitos:', style: 'tableHeader', bold: true },
+                { text: 'Requisitos:', style: 'tableHeader', bold: true, color: "gray", fontSize: 9 },
                 { ul: [] }
             ]
             Object.entries(perguntaData.requisitos).forEach((value: any) => {
-                requesitos[1]['ul'].push({ text: value[0] })
+                requesitos[1]['ul'].push({ text: value[0], color: "gray", fontSize: 9 })
             })
-
         }
 
         content.table.body.push(requesitos)
 
+        let temPendencias = perguntaData.temPendencias ? "Tem pendência" : "Não tem pendência";
+        let foiRespondida = perguntaData.foiRespondida ? "Foi respondida" : "Não foi respondida";
+        let temRespostaValida = perguntaData.temRespostaValida ? "Não tem resposta válida" : "Tem resposta válida";
+
+        content.table.body.push([{ text: 'Pendência:', style: 'tableHeader', bold: true }, { text: temPendencias, style: 'tableHeader' }])
+        content.table.body.push([{ text: 'Respondida:', style: 'tableHeader', bold: true }, { text: foiRespondida, style: 'tableHeader' }])
+        content.table.body.push([{ text: 'Resposta válida:', style: 'tableHeader', bold: true }, { text: temRespostaValida, style: 'tableHeader' }])
+
+
         content.table.body.push([{ text: 'Pergunta:', style: 'tableHeader', bold: true }, { text: perguntaData.textoMarkdown, style: 'tableHeader' }])
-
         content.table.body.push([{ text: 'Tipo:', style: 'tableHeader', bold: true }, { text: perguntaData.tipo.nome, style: 'tableHeader' }])
-
 
         switch (perguntaData.tipo.id) {
             case 'texto':
@@ -232,13 +229,7 @@ export default class Resposta01Template {
         this.addContentElement(content)
     }
 
-    public adicionarCabecalhoPergunta() {
-
-    }
-
-
     // TEXTO ------------------------------------------------------------------------------------------------
-
     public adicionarPerguntaTexto(content: any, pergunta: any, perguntaId: any) {
         if (pergunta.texto != null) {
             content.table.body.push([{ text: 'Resposta:', style: 'tableHeader', bold: true }, { text: pergunta.texto, style: 'tableHeader' }])
@@ -248,17 +239,15 @@ export default class Resposta01Template {
     }
 
     // NUMERO ------------------------------------------------------------------------------------------------
-
     public adicionarPerguntaNumero(content: any, pergunta: any, perguntaId: any) {
-        if (pergunta.texto != null) {
-            content.table.body.push([{ text: 'Resposta:', style: 'tableHeader', bold: true }, { text: pergunta.texto, style: 'tableHeader' }])
+        if (pergunta.numero != null) {
+            content.table.body.push([{ text: 'Resposta:', style: 'tableHeader', bold: true }, { text: pergunta.numero, style: 'tableHeader' }])
         } else {
             content.table.body.push([{ text: 'Resposta:', style: 'tableHeader', bold: true }, { text: "Nada informado.", style: 'tableHeader' }])
         }
     }
 
     // IMAGEM ------------------------------------------------------------------------------------------------
-
     public adicionarPerguntaImagem(content: any, pergunta: any, perguntaId: any) {
 
         let lista: any = []
@@ -282,7 +271,6 @@ export default class Resposta01Template {
     }
 
     // ARQUIVO ------------------------------------------------------------------------------------------------
-
     public adicionarPerguntaArquivo(content: any, pergunta: any, perguntaId: any) {
 
         let lista: any = []
@@ -306,7 +294,6 @@ export default class Resposta01Template {
     }
 
     // COORDENADA ------------------------------------------------------------------------------------------------
-
     public adicionarPerguntaCoordenada(content: any, pergunta: any, perguntaId: any) {
 
         let lista: any = []
@@ -327,28 +314,8 @@ export default class Resposta01Template {
     }
 
     // ESCOLHA UNICA ------------------------------------------------------------------------------------------------
-
     public adicionarPerguntaEscolhas(content: any, pergunta: any, perguntaId: any) {
-
-        // if (pergunta.escolhas != null && Object.entries(pergunta.escolhas).length > 0) {
-
-        //     Object.entries(pergunta.escolhas).sort((a: any, b: any) => { return a[1].ordem - b[1].ordem }).forEach((value: any) => {
-        //         if (value[1].marcada) {
-        //             this.addContentElement({ text: ` [ x ] ${value[1].texto}`, style: 'A3' })
-        //         } else {
-        //             this.addContentElement({ text: ` [    ] ${value[1].texto}`, style: 'A3' })
-        //         }
-        //     })
-
-        //     for (var item in pergunta.coordenada) {
-        //         this.addContentElement({ text: `(${pergunta.coordenada[item]["latitude"]},${pergunta.coordenada[item]["longitude"]})`, style: 'A3' })
-        //     }
-        // } else {
-        //     this.addContentElement({ text: 'Nada informado', style: 'A3' })
-        // }
-
         // multiplas escolhas
-
         let multiplas_escolhas: any = []
 
         if (pergunta.escolhas != null && Object.entries(pergunta.escolhas).length > 0) {
@@ -381,31 +348,5 @@ export default class Resposta01Template {
         } else {
             content.table.body.push([{ text: 'Resposta:', style: 'tableHeader', bold: true }, { text: "  ", style: 'tableHeader' }])
         }
-    }
-
-    // ESCOLHA MULTIPLA ------------------------------------------------------------------------------------------------
-    public adicionarPerguntaEscolhaMultipla(content: any, pergunta: any, perguntaId: any) {
-
-        //this.addCabecalhoPergunta(pergunta)
-
-        if (pergunta.escolhas != null && Object.entries(pergunta.escolhas).length > 0) {
-
-            Object.entries(pergunta.escolhas).sort((a: any, b: any) => { return a[1].ordem - b[1].ordem }).forEach((value: any) => {
-                if (value[1].marcada) {
-                    this.addContentElement({ text: ` [ x ] ${value[1].texto}`, style: 'A3' })
-                } else {
-                    this.addContentElement({ text: ` [    ] ${value[1].texto}`, style: 'A3' })
-                }
-            })
-
-            for (var item in pergunta.coordenada) {
-                this.addContentElement({ text: `(${pergunta.coordenada[item]["latitude"]},${pergunta.coordenada[item]["longitude"]})`, style: 'A3' })
-            }
-        } else {
-            this.addContentElement({ text: 'Nada informado', style: 'A3' })
-        }
-
-        //this.addSubCabecalhoPergunta(pergunta, perguntaId)
-        //this.addTableRow(pergunta)
     }
 }
