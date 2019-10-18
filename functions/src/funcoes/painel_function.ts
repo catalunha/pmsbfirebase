@@ -76,10 +76,46 @@ export function iniciaOnUpdate(painelSnap: any) {
 
     DatabaseReferences.atualizarNomeDeCollectionEmOutrasCollections('SetorCensitarioPainel', 'painelID.id', painelId, {
         "painelID.nome": painelData.nome,
+        "painelID.tipo": painelData.tipo,
     })
-    return 0;
+
+    return adicionarNovaCelulaTipoSetorCensitarioPainel(painelData, painelId)
 }
 
+
+export async function adicionarNovaCelulaTipoSetorCensitarioPainel(painelData: any, painelID:any) {
+
+    let relatorioController = new GoogleApiController.SpreadSheetsApiController("1lGwxBTGXd55H6QfnJ_7WKuNBJi16dC_J6PBk0QR0viA");
+
+    return await relatorioController.getTodoOsDadosTabela().then(async (dadosTablela: any) => {
+
+        let lista = dadosTablela["valueRanges"][0]["valueRange"]["values"];
+
+        // Filtra a coluna onde esta o setor
+        let linhaPos: any;
+        await relatorioController.filtrarDadosPorPosicao(1, lista, painelID).then(data => linhaPos = data)
+
+        let colPosTab = await relatorioController.columnToLetter(1)
+        let linPosTab = await linhaPos.index + 1
+
+        let spreadModel = new GoogleApiController.SpreadSheetsBatchUpdateModel(relatorioController.getSpreadSheetID(), relatorioController.getOAuth2Client());
+
+        let valor = painelData.nome
+        spreadModel.adicionarNovaCelula(await colPosTab + await linPosTab, await valor)
+
+        let model = spreadModel.getModel();
+
+        relatorioController.batchUpdateNovaCelula(model).then(() => {
+            console.log("FOI - appendNovaCelula")
+        }).catch((err) => {
+            console.log(err)
+        })
+
+    }).catch((err: any) => {
+        console.error("inserir nova coluna na tabela : " + err)
+    })
+
+}
 
 /**
  * ON DELETE

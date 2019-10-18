@@ -188,11 +188,12 @@ export default class Resposta01Template {
 
         let temPendencias = perguntaData.temPendencias ? "Tem pendência" : "Não tem pendência";
         let foiRespondida = perguntaData.foiRespondida ? "Foi respondida" : "Não foi respondida";
-        let temRespostaValida = perguntaData.temRespostaValida ? "Não tem resposta válida" : "Tem resposta válida";
+
+        // let temRespostaValida = !perguntaData.foiRespondida && perguntaData.temRespostaValida ? "Informado como rascunho" : "Não foi informado o rascunho";
 
         content.table.body.push([{ text: 'Pendência:', style: 'tableHeader', bold: true }, { text: temPendencias, style: 'tableHeader' }])
         content.table.body.push([{ text: 'Respondida:', style: 'tableHeader', bold: true }, { text: foiRespondida, style: 'tableHeader' }])
-        content.table.body.push([{ text: 'Resposta válida:', style: 'tableHeader', bold: true }, { text: temRespostaValida, style: 'tableHeader' }])
+        // content.table.body.push([{ text: 'Resposta válida:', style: 'tableHeader', bold: true }, { text: temRespostaValida, style: 'tableHeader' }])
 
 
         content.table.body.push([{ text: 'Pergunta:', style: 'tableHeader', bold: true }, { text: perguntaData.textoMarkdown, style: 'tableHeader' }])
@@ -223,6 +224,12 @@ export default class Resposta01Template {
             default:
                 console.log("Tipo pergunta nao identificada")
                 break;
+        }
+
+        if (perguntaData.observacao != null) {
+            content.table.body.push([{ text: 'Obervação:', style: 'tableHeader', bold: true }, { text: perguntaData.observacao, style: 'tableHeader' }])
+        } else {
+            content.table.body.push([{ text: 'Obervação:', style: 'tableHeader', bold: true }, { text: " Não tem observação ", style: 'tableHeader' }])
         }
 
         this.addTableRow(perguntaData)

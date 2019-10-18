@@ -34,7 +34,7 @@ export default class DatabaseReferences {
             if (dadosFiltrado.docs.length > 0) {
                 dadosFiltrado.docs.forEach(async (dadoFiltrado: any, index_filt: any, array_filt: any) => {
                     this.db.collection(collectionNome).doc(dadoFiltrado.id).update(updateJsonData).then(() => {
-                        console.log("ATUALIZAR NOME COLECTION " + collectionNome + " >> " + dadoFiltrado.id);
+                        //console.log("ATUALIZAR NOME COLECTION " + collectionNome + " >> " + dadoFiltrado.id);
                     })
                 })
             }

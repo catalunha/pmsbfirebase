@@ -5,8 +5,13 @@ import * as GoogleApiController from "../google_api_controller/google_api_contro
 
 export function iniciarOnUpdate(painelSnap: any) {
 
-    let data = painelSnap.after.data()
-    return adicionarNovaCelulaTipoSetorCensitarioPainel(data)
+    let dataAfter = painelSnap.after.data()
+    let dataBefore = painelSnap.before.data()
+    if (dataAfter.valor != dataBefore.valor) {
+        return adicionarNovaCelulaTipoSetorCensitarioPainel(dataAfter)
+    } else {
+        return 0;
+    }
 }
 
 export async function adicionarNovaCelulaTipoSetorCensitarioPainel(painelData: any) {
