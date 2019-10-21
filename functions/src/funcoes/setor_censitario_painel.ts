@@ -1,24 +1,32 @@
-// import DatabaseReferences from "../database-references";
 import * as GoogleApiController from "../google_api_controller/google_api_controller_map"
+var FieldValue = require('firebase-admin').firestore.FieldValue;
 
 // ON CREATE
 
 export function iniciarOnUpdate(painelSnap: any) {
 
-    let dataAfter = painelSnap.after.data()
-    let dataBefore = painelSnap.before.data()
-    if (dataAfter.valor != dataBefore.valor) {
-        return adicionarNovaCelulaTipoSetorCensitarioPainel(dataAfter)
+    let dataDepois = painelSnap.after.data()
+    let dataAntes = painelSnap.before.data()
+
+    if ((dataAntes.painelID.tipo == "booleano" && dataDepois.painelID.tipo != "booleano") || (dataAntes.painelID.tipo != "booleano" && dataDepois.painelID.tipo == "booleano")) {
+        console.log("Remover valor")
+        painelSnap.after.ref.update({
+            "valor": FieldValue.delete()
+        })
     } else {
-        return 0;
+        console.log("no valor")
+
     }
+    //return 0;
+    // }
+    return adicionarNovaCelulaTipoSetorCensitarioPainel(dataDepois)
+
 }
 
 export async function adicionarNovaCelulaTipoSetorCensitarioPainel(painelData: any) {
 
     let painel = painelData.painelID;
     let setorCensitario = painelData.setorCensitarioID;
-
 
     let relatorioController = new GoogleApiController.SpreadSheetsApiController("1lGwxBTGXd55H6QfnJ_7WKuNBJi16dC_J6PBk0QR0viA");
 
@@ -28,9 +36,8 @@ export async function adicionarNovaCelulaTipoSetorCensitarioPainel(painelData: a
 
         // Filtra a coluna onde esta o setor
         let linhaPos: any;
-        await relatorioController.filtrarDadosPorPosicao(1, lista, painel.id).then(data => linhaPos = data)
-
-        // Filtra a linha onde esta o painel tipo
+        await relatorioController.filtrarDadosPorPosicao(4, lista, painel.id).then(data => linhaPos = data)
+        // Filtra a linha onde esta o painel tipo   
         let colunaPos: any;
         await relatorioController.filtrarDadosDeLista(lista[1], setorCensitario.id).then(data => colunaPos = data)
 
@@ -39,8 +46,7 @@ export async function adicionarNovaCelulaTipoSetorCensitarioPainel(painelData: a
 
         let spreadModel = new GoogleApiController.SpreadSheetsBatchUpdateModel(relatorioController.getSpreadSheetID(), relatorioController.getOAuth2Client());
 
-        let valor;
-
+        let valor = ""
         switch (painel.tipo) {
             case "texto":
                 valor = painelData.valor;
@@ -56,24 +62,30 @@ export async function adicionarNovaCelulaTipoSetorCensitarioPainel(painelData: a
                 }
                 break;
             case "urlarquivo":
-                valor = '=HIPERLINK("' + painelData.valor + '";"Link do arquivo")';
+                if (painelData.valor && painelData.valor.length > 0) {
+                    valor = '=HIPERLINK("' + painelData.valor + '";"Link do arquivo")';
+                }
                 break;
             case "urlimagem":
-                valor = '=HIPERLINK("' + painelData.valor + '";IMAGE("' + painelData.valor + '"))';
+                if (painelData.valor && painelData.valor.length > 0) {
+                    valor = '=HIPERLINK("' + painelData.valor + '";IMAGE("' + painelData.valor + '"))';
+                }
                 break;
             default:
                 console.log("adicionarNovaCelulaTipoSetorCensitarioPainel :: Nenhum tipo encontrado")
                 break;
         }
 
-        // console.log(" POS : " + await colPosTab + await linPosTab)
-
         spreadModel.adicionarNovaCelula(await colPosTab + await linPosTab, await valor)
+        spreadModel.adicionarNovaCelula("A" + await linPosTab, painelData.produto.nome)
+        spreadModel.adicionarNovaCelula("B" + await linPosTab, painelData.eixo.nome)
+        spreadModel.adicionarNovaCelula("C" + await linPosTab, painelData.usuarioQVaiResponder.nome)
+
 
         let model = spreadModel.getModel();
 
         relatorioController.batchUpdateNovaCelula(model).then(() => {
-            console.log("FOI - appendNovaCelula")
+            //console.log("FOI - appendNovaCelula")
         }).catch((err) => {
             console.log(err)
         })

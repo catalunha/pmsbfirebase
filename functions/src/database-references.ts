@@ -44,6 +44,20 @@ export default class DatabaseReferences {
 
     }
 
+    public static atualizarDadosDeCollectionEmOutrasCollectionsMerge(collectionNome: any, whereRefId: any, novaRefId: any, updateJsonData: any) {
+        this.db.collection(collectionNome).where(whereRefId, '==', novaRefId).get().then(async (dadosFiltrado: any) => {
+            if (dadosFiltrado.docs.length > 0) {
+                dadosFiltrado.docs.forEach(async (dadoFiltrado: any, index_filt: any, array_filt: any) => {
+                    this.db.collection(collectionNome).doc(dadoFiltrado.id).set(updateJsonData,{merge:true}).then(() => {
+                        //console.log("ATUALIZAR NOME COLECTION " + collectionNome + " >> " + dadoFiltrado.id);
+                    })
+                })
+            }
+        }).catch((err: any) => {
+            console.log('Error getting documents : atualizarNomeUsuarioEmCollection ', err)
+        })
+
+    }
 
     public static apagarDocDeCollectionEmOutrasCollections(collectionNome: any, whereRefId: any, novaRefId: any) {
         this.db.collection(collectionNome).where(whereRefId, '==', novaRefId).get().then(async (dadosFiltrado: any) => {

@@ -24,11 +24,14 @@ export async function adicionarNovoTipoPainelNaTabela(painelSnap: any) {
         let spreadModel = new GoogleApiController.SpreadSheetsBatchUpdateModel(relatorioController.getSpreadSheetID(), relatorioController.getOAuth2Client());
 
         let quantElementos = dadosTablela.values.length;
-        let posicaoNome = "A" + (quantElementos + 1);
-        let posicaoId = "B" + (quantElementos + 1);
+        let posicaoNome = "D" + (quantElementos + 1);
+        let posicaoId = "E" + (quantElementos + 1);
 
         spreadModel.adicionarNovaCelula(posicaoNome, painelSnap.data().nome)
         spreadModel.adicionarNovaCelula(posicaoId, painelSnap.id)
+        spreadModel.adicionarNovaCelula("A" + (quantElementos + 1), painelSnap.data().produto.nome)
+        spreadModel.adicionarNovaCelula("B" + (quantElementos + 1), painelSnap.data().eixo.nome)
+        spreadModel.adicionarNovaCelula("C" + (quantElementos + 1), painelSnap.data().usuarioQVaiResponder.nome)
 
         let model = spreadModel.getModel();
 
@@ -59,7 +62,17 @@ export function _criarNovoDocSetorCensitarioPainel(painelSnap: any, setorCensita
         setorCensitarioID: {
             id: setorCensitarioSnap.id,
             nome: setorCensitarioData.nome
+        }, produto: {
+            id: painelSnap.produto.id,
+            nome: painelSnap.produto.nome
+        }, eixo: {
+            id: painelSnap.eixo.id,
+            nome: painelSnap.eixo.nome
+        }, usuarioQVaiResponder: {
+            id: painelSnap.usuarioQVaiResponder.id,
+            nome: painelSnap.usuarioQVaiResponder.nome
         }
+
     }).then(() => {
         console.log("RELACAO CRIADA : SetorCensitario >> SetorCensitarioPainel : " + setorCensitarioData.nome)
     })
@@ -71,19 +84,33 @@ export function _criarNovoDocSetorCensitarioPainel(painelSnap: any, setorCensita
  */
 
 export function iniciaOnUpdate(painelSnap: any) {
+
     const painelData = painelSnap.after.data();
     const painelId = painelSnap.after.id;
 
-    DatabaseReferences.atualizarNomeDeCollectionEmOutrasCollections('SetorCensitarioPainel', 'painelID.id', painelId, {
-        "painelID.nome": painelData.nome,
-        "painelID.tipo": painelData.tipo,
+
+    DatabaseReferences.atualizarDadosDeCollectionEmOutrasCollectionsMerge('SetorCensitarioPainel', 'painelID.id', painelId, {
+        painelID: {
+            nome: painelData.nome,
+            tipo: painelData.tipo
+        },
+        produto: {
+            id: painelData.produto.id,
+            nome: painelData.produto.nome
+        }, eixo: {
+            id: painelData.eixo.id,
+            nome: painelData.eixo.nome
+        }, usuarioQVaiResponder: {
+            id: painelData.usuarioQVaiResponder.id,
+            nome: painelData.usuarioQVaiResponder.nome
+        }
     })
 
     return adicionarNovaCelulaTipoSetorCensitarioPainel(painelData, painelId)
 }
 
 
-export async function adicionarNovaCelulaTipoSetorCensitarioPainel(painelData: any, painelID:any) {
+export async function adicionarNovaCelulaTipoSetorCensitarioPainel(painelData: any, painelID: any) {
 
     let relatorioController = new GoogleApiController.SpreadSheetsApiController("1lGwxBTGXd55H6QfnJ_7WKuNBJi16dC_J6PBk0QR0viA");
 
@@ -93,16 +120,18 @@ export async function adicionarNovaCelulaTipoSetorCensitarioPainel(painelData: a
 
         // Filtra a coluna onde esta o setor
         let linhaPos: any;
-        await relatorioController.filtrarDadosPorPosicao(1, lista, painelID).then(data => linhaPos = data)
+        await relatorioController.filtrarDadosPorPosicao(4, lista, painelID).then(data => linhaPos = data)
 
-        let colPosTab = await relatorioController.columnToLetter(1)
+        let colPosTab = await relatorioController.columnToLetter(4)
         let linPosTab = await linhaPos.index + 1
 
         let spreadModel = new GoogleApiController.SpreadSheetsBatchUpdateModel(relatorioController.getSpreadSheetID(), relatorioController.getOAuth2Client());
 
         let valor = painelData.nome
         spreadModel.adicionarNovaCelula(await colPosTab + await linPosTab, await valor)
-
+        // spreadModel.adicionarNovaCelula(await 1 + await linPosTab, await painelData.produto.nome)
+        // spreadModel.adicionarNovaCelula(await 2 + await linPosTab, await painelData.eixo.nome)
+        // spreadModel.adicionarNovaCelula(await 3 + await linPosTab, await painelData.usuarioQVaiResponder.nome)
         let model = spreadModel.getModel();
 
         relatorioController.batchUpdateNovaCelula(model).then(() => {

@@ -41,7 +41,7 @@ export class SpreadSheetsApiController extends GoogleApiControllerTemplateBase {
         return new Promise((resolve, reject) => {
             lista.forEach((x: any, index: any) => {
                 if (x[posicao] == valorFiltro) {
-                    resolve({ index:index , valor: x })
+                    resolve({ index: index, valor: x })
                 }
             });
         })
