@@ -1,11 +1,12 @@
 import { Timestamp } from "@google-cloud/firestore";
 import * as moment from "moment";
+import axios from "axios";
 
 export default class RelatorioQuestionarioAplicadoTemplate {
 
-    public nomeQuestionario:any;
+    public nomeQuestionario: any;
 
-    constructor(nomeQuestionario:any) {
+    constructor(nomeQuestionario: any) {
         this.nomeQuestionario = nomeQuestionario;
     }
 
@@ -35,8 +36,8 @@ export default class RelatorioQuestionarioAplicadoTemplate {
 
     private docDefinition: any = {
         content: [],
-        footer: (currentPage:any, pageCount:any)=>{ return { text: this.nomeQuestionario + " - " + currentPage.toString() + ' de ' + pageCount, alignment: 'right', margin: [0, 0, 40, 50], color: "gray" } },
-        header: function (currentPage:any, pageCount:any, pageSize:any) {
+        footer: (currentPage: any, pageCount: any) => { return { text: this.nomeQuestionario + " - " + currentPage.toString() + ' de ' + pageCount, alignment: 'right', margin: [0, 0, 40, 50], color: "gray" } },
+        header: function (currentPage: any, pageCount: any, pageSize: any) {
             // you can apply any logic and return any valid pdfmake element
             return [
                 { text: 'Relatorio de questionario aplicado', alignment: 'right', margin: [0, 25, 40, 10], color: "gray" },
@@ -288,15 +289,31 @@ export default class RelatorioQuestionarioAplicadoTemplate {
 
     // IMAGEM ------------------------------------------------------------------------------------------------
 
-    public adicionarPerguntaImagem(pergunta: any, perguntaId: any) {
+    public async adicionarPerguntaImagem(pergunta: any, perguntaId: any) {
 
         this.addCabecalhoPergunta(pergunta)
 
         if (pergunta.arquivo != null && Object.entries(pergunta.arquivo).length > 0) {
-            let contador = 1;
+            //let contador = 1;
             for (var item in pergunta.arquivo) {
-                this.addContentElement({ text: "Imagem " + contador + ' . Click para visualizar.', link: pergunta.arquivo[item]['url'], decoration: 'underline', color: "blue" })
-                contador++;
+                let result;
+                try {
+                    result = await axios.get(pergunta.arquivo[item]['url'], {
+                        responseType: 'arraybuffer'
+                    })
+                } catch (err) {
+                    return console.log("Err - pegando imagem do pdfmaker - " + pergunta.arquivo[item]['url'])
+                }
+
+                var image = new Buffer(result.data, 'base64')
+
+                //this.addContentElement({ text: "Imagem " + contador + ' . Click para visualizar.', link: pergunta.arquivo[item]['url'], decoration: 'underline', color: "blue" })
+                this.addContentElement({
+                    image: image,
+                    width: 200
+                })
+
+                //contador++;
             }
         } else {
             this.addContentElement({ text: 'Nada informado', style: 'A3' })

@@ -5,19 +5,19 @@ import * as functions from 'firebase-functions';
  * SetorCensitarioPainel
  */
 
-import * as setorCensitarioPainelFunctions from './funcoes/setor_censitario_painel';
+// import * as setorCensitarioPainelFunctions from './funcoes/setor_censitario_painel';
 
-exports.setorCensitarioPainelOnCreateFunction = functions.firestore.document('SetorCensitarioPainel/{SetorCensitarioPainelId}').onUpdate(setorCensitarioPainelFunctions.iniciarOnUpdate);
+// exports.setorCensitarioPainelOnCreateFunction = functions.firestore.document('SetorCensitarioPainel/{SetorCensitarioPainelId}').onUpdate(setorCensitarioPainelFunctions.iniciarOnUpdate);
 
 /**
  * PAINEL
  */
 
-import * as painelFunctions from './funcoes/painel_function';
+// import * as painelFunctions from './funcoes/painel_function';
 
-exports.painelOnUpdateFunction = functions.firestore.document('Painel/{painelId}').onUpdate(painelFunctions.iniciaOnUpdate);
+// exports.painelOnUpdateFunction = functions.firestore.document('Painel/{painelId}').onUpdate(painelFunctions.iniciaOnUpdate);
 
-exports.painelOnCreateFunction = functions.firestore.document('Painel/{painelId}').onCreate(painelFunctions.iniciarOnCreate);
+// exports.painelOnCreateFunction = functions.firestore.document('Painel/{painelId}').onCreate(painelFunctions.iniciarOnCreate);
 
 // exports.painelOnDeleteFunction = functions.firestore.document('Painel/{painelId}').onDelete(painelFunctions.iniciarOnDelete);
 
@@ -34,11 +34,11 @@ exports.painelOnCreateFunction = functions.firestore.document('Painel/{painelId}
  * Documentos
  */
 
-// import * as relatorioFunctions from './funcoes/relatorios_functions';
+import * as relatorioFunctions from './funcoes/relatorios_functions';
 
-// exports.gerarRelatorioPdfOnUpdateFunction = functions.firestore.document('RelatorioPdfMake/{RelatorioPdfMakeId}').onUpdate(relatorioFunctions.iniciaOnUpdate);
+exports.gerarRelatorioPdfOnUpdateFunction = functions.firestore.document('RelatorioPdfMake/{RelatorioPdfMakeId}').onUpdate(relatorioFunctions.iniciaOnUpdate);
 
-// exports.gerarRelatorioPdfOnCreateFunction = functions.firestore.document('RelatorioPdfMake/{RelatorioPdfMakeId}').onCreate(relatorioFunctions.iniciaOnCreate);
+exports.gerarRelatorioPdfOnCreateFunction = functions.firestore.document('RelatorioPdfMake/{RelatorioPdfMakeId}').onCreate(relatorioFunctions.iniciaOnCreate);
 
 /**
 * Eixo

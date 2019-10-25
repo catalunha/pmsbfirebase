@@ -1,5 +1,7 @@
 import { Timestamp } from "@google-cloud/firestore";
 import moment = require("moment");
+import axios from 'axios';
+
 
 export default class Resposta01Template {
 
@@ -129,7 +131,6 @@ export default class Resposta01Template {
             },
             layout: 'noBorders'
         })
-
         this.addContentElement({
             stack: [
                 { text: 'Lista que perguntas desse questionário:', style: 'subheader' },
@@ -137,6 +138,29 @@ export default class Resposta01Template {
             alignment: 'left',
             margin: [0, 18],
         })
+
+        try {
+            let result = await axios.get('https://cdn.pixabay.com/photo/2017/10/27/15/52/jaguar-2894706__340.jpg', {
+                responseType: 'arraybuffer'
+            })
+            let image = new Buffer(result.data, 'binary').toString('base64');
+
+            let finalImage = `data:image/jpeg;base64,${image}`
+
+            let comp = {
+                image: finalImage,
+                width: 150,
+                height: 150
+            };
+
+            this.addContentElement(comp)
+
+            console.log("base64: " + finalImage);
+            // console.log("RequestAnswer: " + result.data)
+        } catch (err) {
+            return console.log("Erro image : " + err.message)
+        }
+
     }
 
 
