@@ -4,3 +4,4 @@ admin.initializeApp();
 
 const storage = admin.storage();
 storage.bucket()
+

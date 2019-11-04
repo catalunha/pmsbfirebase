@@ -131,6 +131,7 @@ export default class Resposta01Template {
             },
             layout: 'noBorders'
         })
+        
         this.addContentElement({
             stack: [
                 { text: 'Lista que perguntas desse questionário:', style: 'subheader' },

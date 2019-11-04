@@ -48,7 +48,7 @@ export default class DatabaseReferences {
         this.db.collection(collectionNome).where(whereRefId, '==', novaRefId).get().then(async (dadosFiltrado: any) => {
             if (dadosFiltrado.docs.length > 0) {
                 dadosFiltrado.docs.forEach(async (dadoFiltrado: any, index_filt: any, array_filt: any) => {
-                    this.db.collection(collectionNome).doc(dadoFiltrado.id).set(updateJsonData,{merge:true}).then(() => {
+                    this.db.collection(collectionNome).doc(dadoFiltrado.id).set(updateJsonData, { merge: true }).then(() => {
                         //console.log("ATUALIZAR NOME COLECTION " + collectionNome + " >> " + dadoFiltrado.id);
                     })
                 })
@@ -72,5 +72,25 @@ export default class DatabaseReferences {
             console.log('Error getting documents : apagarDocDeCollectionEmOutrasCollections ', err)
         })
 
+    }
+
+    public static criarUsuario(data: any) {
+        admin.auth().createUser({
+            email: data.email,
+            emailVerified: false,
+            password: "pmsb22to",
+            //displayName: data.nome,
+        }).then(function (userRecord) {
+
+            console.log("Successfully created new user:", userRecord.uid);
+
+            // let email: any = userRecord.email;
+            // admin.auth().generateEmailVerificationLink(email).then((result) => {
+            //     console.log("Send verification email : " + result)
+            // });
+
+        }).catch(function (error) {
+            console.log("Error creating new user:", error);
+        });
     }
 }
