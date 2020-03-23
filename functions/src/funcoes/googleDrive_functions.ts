@@ -14,7 +14,6 @@ export function iniciarOnCreate(documentSnap: any) {
 
     console.log("CRIAR NOVO DOCUMENTO NO GDRIVE -> " + documentSnapId)
 
-
     const oAuth2Client = new OAuth2(
         "1092622474927-9dgqh9vmoq384jq8dd58p027hk6oa1fh.apps.googleusercontent.com",
         "NXuw1CAF1upMYLCSdvB4xi-z",
@@ -24,7 +23,6 @@ export function iniciarOnCreate(documentSnap: any) {
     oAuth2Client.setCredentials({
         refresh_token: "1/cGTNyhlCKlehB0K-HN6yu4sAFu7L6pi90JBdhaHe5HeTrOX94FqpnK1iQB1KjPYJ"
     });
-
 
     if (documentSnapData.tipo == 'document') {
 

@@ -19,11 +19,14 @@ export async function adicionarNovoTipoPainelNaTabela(painelSnap: any) {
 
     let relatorioController = new GoogleApiController.SpreadSheetsApiController("1lGwxBTGXd55H6QfnJ_7WKuNBJi16dC_J6PBk0QR0viA");
 
+    relatorioController.adicionarNovaCelula('','','');
+
     return await relatorioController.getDadosDaTabela("A:A").then((dadosTablela: any) => {
 
         let spreadModel = new GoogleApiController.SpreadSheetsBatchUpdateModel(relatorioController.getSpreadSheetID(), relatorioController.getOAuth2Client());
 
         let quantElementos = dadosTablela.values.length;
+        
         let posicaoNome = "D" + (quantElementos + 1);
         let posicaoId = "E" + (quantElementos + 1);
 

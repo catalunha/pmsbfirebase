@@ -27,43 +27,95 @@ export function iniciarSetorCensitarioOnUpdate(uploadSnap: any) {
     }
 }
 
+// export async function old_atualizarSetorCensitarioNaPlanilha(setorCensitarioData: any, setorCensitarioID: any) {
+
+//     let relatorioController = new GoogleApiController.SpreadSheetsApiController("1lGwxBTGXd55H6QfnJ_7WKuNBJi16dC_J6PBk0QR0viA");
+
+//     return await relatorioController.getTodoOsDadosTabela().then(async (dadosTablela: any) => {
+
+//         let lista = dadosTablela["valueRanges"][0]["valueRange"]["values"];
+
+//         // Filtra a linha onde esta o painel tipo
+//         let colunaPos: any;
+//         await relatorioController.filtrarDadosDeLista(lista[1], setorCensitarioID).then(data => colunaPos = data)
+
+//         let colPosTab = await relatorioController.columnToLetter(colunaPos.index + 1)
+
+//         console.log(">>>> POSICAO : " + colPosTab)
+
+//         let linPosTab = await 1
+
+//         let spreadModel = new GoogleApiController.SpreadSheetsBatchUpdateModel(relatorioController.getSpreadSheetID(), relatorioController.getOAuth2Client());
+
+//         let valor = setorCensitarioData.nome;
+
+//         spreadModel.adicionarNovaCelula(await colPosTab + await linPosTab, await valor)
+
+//         let model = spreadModel.getModel();
+
+//         relatorioController.batchUpdateNovaCelula(model).then(() => {
+//             console.log("FOI - appendNovaCelula")
+//         }).catch((err) => {
+//             console.log(err)
+//         })
+
+//     }).catch((err: any) => {
+//         console.error("inserir nova coluna na tabela : " + err)
+//     })
+// }
+
 export async function atualizarSetorCensitarioNaPlanilha(setorCensitarioData: any, setorCensitarioID: any) {
 
-
-    let relatorioController = new GoogleApiController.SpreadSheetsApiController("1lGwxBTGXd55H6QfnJ_7WKuNBJi16dC_J6PBk0QR0viA");
+    let relatorioController: GoogleApiController.SpreadSheetsApiController = new GoogleApiController.SpreadSheetsApiController("1lGwxBTGXd55H6QfnJ_7WKuNBJi16dC_J6PBk0QR0viA");
 
     return await relatorioController.getTodoOsDadosTabela().then(async (dadosTablela: any) => {
 
         let lista = dadosTablela["valueRanges"][0]["valueRange"]["values"];
 
-        // Filtra a linha onde esta o painel tipo
+        // definir pos coluna
         let colunaPos: any;
         await relatorioController.filtrarDadosDeLista(lista[1], setorCensitarioID).then(data => colunaPos = data)
-
         let colPosTab = await relatorioController.columnToLetter(colunaPos.index + 1)
 
-        console.log(">>>> POSICAO : " + colPosTab)
-
+        // definir pos Linha
         let linPosTab = await 1
 
-        let spreadModel = new GoogleApiController.SpreadSheetsBatchUpdateModel(relatorioController.getSpreadSheetID(), relatorioController.getOAuth2Client());
-
+        // Definir valor
         let valor = setorCensitarioData.nome;
 
-        spreadModel.adicionarNovaCelula(await colPosTab + await linPosTab, await valor)
+        // Anexar nova celula com valor
+        relatorioController.adicionarNovaCelula(await colPosTab, await linPosTab.toString(), await valor)
 
-        let model = spreadModel.getModel();
-
-        relatorioController.batchUpdateNovaCelula(model).then(() => {
-            console.log("FOI - appendNovaCelula")
+        // Enviar para tabela na nuvem
+        relatorioController.batchUpdateNovasCelulas().then(() => {
+            console.log("Setor censitario : Atualizacao realizada com sucesso")
         }).catch((err) => {
-            console.log(err)
+            console.log("Setor censitario : Erro ao atualizar tabela : " + err)
         })
 
     }).catch((err: any) => {
         console.error("inserir nova coluna na tabela : " + err)
     })
 }
+
+
+// export async function exemploAtulizacaoTabela() {
+
+//     let relatorioController = new GoogleApiController.SpreadSheetsApiController("1lGwxBTGXd55H6QfnJ_7WKuNBJi16dC_J6PBk0QR0viA");
+
+//     let coluna: string = 'A'
+//     let linha: number = 15;
+//     let valor: string = "valor teste";
+
+//     relatorioController.adicionarNovaCelula(coluna, linha.toString(), valor)
+
+//     relatorioController.batchUpdateNovasCelulas().then(() => {
+//         console.log("Atualizacao realizada com sucesso")
+//     }).catch((err) => {
+//         console.log("Erro ao atualizar tabela : " + err)
+//     });
+// }
+
 
 
 // ON CREATE

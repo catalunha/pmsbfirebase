@@ -1,14 +1,18 @@
 
 import GoogleApiControllerTemplateBase from "../api_controller_template_base";
+import * as GoogleApiController from "../google_api_controller_map";
+
 const { google } = require('googleapis');
 
 export class SpreadSheetsApiController extends GoogleApiControllerTemplateBase {
 
+    public spreadModel: GoogleApiController.SpreadSheetsBatchUpdateModel;
     public spreadSheetID: string;
     public sheets: any;
 
     constructor(spreadSheetID: string) {
         super()
+        this.spreadModel = new GoogleApiController.SpreadSheetsBatchUpdateModel(spreadSheetID, this.getOAuth2Client());
         this.spreadSheetID = spreadSheetID;
         this.sheets = google.sheets('v4');
     }
@@ -118,8 +122,37 @@ export class SpreadSheetsApiController extends GoogleApiControllerTemplateBase {
                 }
             });
         })
-
     }
+
+
+    /**
+     * @param coluna Paramentro da posição da celula que tera o valor alterado
+     * @param linha Paramentro da linha da celula que tera o valor alterado
+     * @param valor Valor que sera inserido na nova posicao
+     */
+    public adicionarNovaCelula(coluna: string, linha: string, valor: string) {
+        var range: string = coluna + linha;
+        this.spreadModel.adicionarNovaCelula(range, valor);
+    }
+
+    /**
+     * Funcao responsavel por enviar celulas alteradas a tabela
+     */
+    public batchUpdateNovasCelulas() {
+        return new Promise((resolve: any, reject: any) => {
+            let spreadModelList = this.spreadModel.getModel();
+            this.sheets.spreadsheets.values.batchUpdate(spreadModelList, (err: any, res: any) => {
+                if (err) {
+                    // console.log("appendNovaCelula >> " + err)
+                    reject('The API returned an error: ' + err);
+                }
+                else {
+                    resolve(res.data)
+                }
+            });
+        })
+    }
+
 
     public appendNovaCelula(requestData: any) {
         return new Promise((resolve: any, reject: any) => {
