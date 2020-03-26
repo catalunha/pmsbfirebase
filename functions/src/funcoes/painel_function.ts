@@ -124,17 +124,20 @@ export async function adicionarNovaCelulaTipoSetorCensitarioPainel(painelData: a
         // Filtra a coluna onde esta o setor
         let linhaPos: any;
         await relatorioController.filtrarDadosPorPosicao(4, lista, painelID).then(data => linhaPos = data)
-
-        let colPosTab = await relatorioController.columnToLetter(4)
         let linPosTab = await linhaPos.index + 1
+        
+        let colPosTab = await relatorioController.columnToLetter(4)
+        
 
         let spreadModel = new GoogleApiController.SpreadSheetsBatchUpdateModel(relatorioController.getSpreadSheetID(), relatorioController.getOAuth2Client());
 
         let valor = painelData.nome
         spreadModel.adicionarNovaCelula(await colPosTab + await linPosTab, await valor)
+        
         // spreadModel.adicionarNovaCelula(await 1 + await linPosTab, await painelData.produto.nome)
         // spreadModel.adicionarNovaCelula(await 2 + await linPosTab, await painelData.eixo.nome)
         // spreadModel.adicionarNovaCelula(await 3 + await linPosTab, await painelData.usuarioQVaiResponder.nome)
+        
         let model = spreadModel.getModel();
 
         relatorioController.batchUpdateNovaCelula(model).then(() => {

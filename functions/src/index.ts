@@ -1,13 +1,24 @@
 import * as functions from 'firebase-functions';
 
 
+// /**
+//  * Cadastro
+//  */
+
+// import * as cadastroFunctions from './funcoes/cadastro_functions';
+
+// exports.cadastroOnCreateFunction = functions.firestore.document('Cadastro/{cadastroId}').onCreate(cadastroFunctions.iniciaOnCreate);
+
+
+
 /**
- * Cadastro
+ * IA
  */
 
-import * as cadastroFunctions from './funcoes/cadastro_functions';
+import * as IaItemRespostaFunction from './funcoes/IA_item_resposta_functions';
 
-exports.cadastroOnCreateFunction = functions.firestore.document('Cadastro/{cadastroId}').onCreate(cadastroFunctions.iniciaOnCreate);
+exports.IaItemRespostaOnUpdateFunction = functions.firestore.document('IAItens/{iAItensId}/IAItemResposta/{iAItemRespostaId}').onUpdate(IaItemRespostaFunction.iniciarIaItemRespostaUpdate);
+
 
 
 /**

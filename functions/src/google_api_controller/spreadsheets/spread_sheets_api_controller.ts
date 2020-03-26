@@ -24,7 +24,7 @@ export class SpreadSheetsApiController extends GoogleApiControllerTemplateBase {
     // Axiliares 
 
     public columnToLetter(column: any) {
-        var temp, letter = '';
+        let temp, letter = '';
         while (column > 0) {
             temp = (column - 1) % 26;
             letter = String.fromCharCode(temp + 65) + letter;
@@ -34,7 +34,7 @@ export class SpreadSheetsApiController extends GoogleApiControllerTemplateBase {
     }
 
     public letterToColumn(letter: any) {
-        var column = 0, length = letter.length;
+        let column = 0, length = letter.length;
         for (var i = 0; i < length; i++) {
             column += (letter.charCodeAt(i) - 64) * Math.pow(26, length - i - 1);
         }
@@ -131,7 +131,7 @@ export class SpreadSheetsApiController extends GoogleApiControllerTemplateBase {
      * @param valor Valor que sera inserido na nova posicao
      */
     public adicionarNovaCelula(coluna: string, linha: string, valor: string) {
-        var range: string = coluna + linha;
+        let range: string = coluna + linha;
         this.spreadModel.adicionarNovaCelula(range, valor);
     }
 

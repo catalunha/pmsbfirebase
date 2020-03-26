@@ -99,22 +99,22 @@ export async function atualizarSetorCensitarioNaPlanilha(setorCensitarioData: an
 }
 
 
-// export async function exemploAtulizacaoTabela() {
+export async function exemploAtulizacaoTabela() {
 
-//     let relatorioController = new GoogleApiController.SpreadSheetsApiController("1lGwxBTGXd55H6QfnJ_7WKuNBJi16dC_J6PBk0QR0viA");
+    let relatorioController = new GoogleApiController.SpreadSheetsApiController("1lGwxBTGXd55H6QfnJ_7WKuNBJi16dC_J6PBk0QR0viA");
 
-//     let coluna: string = 'A'
-//     let linha: number = 15;
-//     let valor: string = "valor teste";
+    let coluna: string = 'A'
+    let linha: number = 15;
+    let valor: string = "valor teste";
+    
+    relatorioController.adicionarNovaCelula(coluna, linha.toString(), valor)
 
-//     relatorioController.adicionarNovaCelula(coluna, linha.toString(), valor)
-
-//     relatorioController.batchUpdateNovasCelulas().then(() => {
-//         console.log("Atualizacao realizada com sucesso")
-//     }).catch((err) => {
-//         console.log("Erro ao atualizar tabela : " + err)
-//     });
-// }
+    relatorioController.batchUpdateNovasCelulas().then(() => {
+        console.log("Atualizacao realizada com sucesso")
+    }).catch((err) => {
+        console.log("Erro ao atualizar tabela : " + err)
+    });
+}
 
 
 
