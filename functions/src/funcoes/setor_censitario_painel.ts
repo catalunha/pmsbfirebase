@@ -15,12 +15,9 @@ export function iniciarOnUpdate(painelSnap: any) {
         })
     } else {
         console.log("no valor")
-
     }
-    //return 0;
-    // }
-    return adicionarNovaCelulaTipoSetorCensitarioPainel(dataDepois)
 
+    return adicionarNovaCelulaTipoSetorCensitarioPainel(dataDepois)
 }
 
 export async function adicionarNovaCelulaTipoSetorCensitarioPainel(painelData: any) {
@@ -37,6 +34,7 @@ export async function adicionarNovaCelulaTipoSetorCensitarioPainel(painelData: a
         // Filtra a coluna onde esta o setor
         let linhaPos: any;
         await relatorioController.filtrarDadosPorPosicao(4, lista, painel.id).then(data => linhaPos = data)
+        
         // Filtra a linha onde esta o painel tipo   
         let colunaPos: any;
         await relatorioController.filtrarDadosDeLista(lista[1], setorCensitario.id).then(data => colunaPos = data)
@@ -44,7 +42,7 @@ export async function adicionarNovaCelulaTipoSetorCensitarioPainel(painelData: a
         let colPosTab = await relatorioController.columnToLetter(colunaPos.index + 1)
         let linPosTab = await linhaPos.index + 1
 
-        let spreadModel = new GoogleApiController.SpreadSheetsBatchUpdateModel(relatorioController.getSpreadSheetID(), relatorioController.getOAuth2Client());
+        // let spreadModel = new GoogleApiController.SpreadSheetsBatchUpdateModel(relatorioController.getSpreadSheetID(), relatorioController.getOAuth2Client());
 
         let valor = ""
         switch (painel.tipo) {
@@ -76,15 +74,15 @@ export async function adicionarNovaCelulaTipoSetorCensitarioPainel(painelData: a
                 break;
         }
 
-        spreadModel.adicionarNovaCelula(await colPosTab + await linPosTab, await valor)
-        spreadModel.adicionarNovaCelula("A" + await linPosTab, painelData.produto.nome)
-        spreadModel.adicionarNovaCelula("B" + await linPosTab, painelData.eixo.nome)
-        spreadModel.adicionarNovaCelula("C" + await linPosTab, painelData.usuarioQVaiResponder.nome)
+        relatorioController.adicionarNovaCelula(await colPosTab , await linPosTab, await valor)
+        relatorioController.adicionarNovaCelula("A" , await linPosTab, painelData.produto.nome)
+        relatorioController.adicionarNovaCelula("B" , await linPosTab, painelData.eixo.nome)
+        relatorioController.adicionarNovaCelula("C" , await linPosTab, painelData.usuarioQVaiResponder.nome)
 
 
-        let model = spreadModel.getModel();
+        // let model = spreadModel.getModel();
 
-        relatorioController.batchUpdateNovaCelula(model).then(() => {
+        relatorioController.batchUpdateNovasCelulas().then(() => {
             //console.log("FOI - appendNovaCelula")
         }).catch((err) => {
             console.log(err)

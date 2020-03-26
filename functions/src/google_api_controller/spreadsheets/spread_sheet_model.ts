@@ -6,13 +6,10 @@ export class SpreadSheetsBatchUpdateModel {
     constructor(spreadSheetID: any, oAuth2Client: any) {
         this.model = {
             spreadsheetId: spreadSheetID,
-
             resource: {
                 data: [],
                 "valueInputOption": "USER_ENTERED"
-
             },
-
             auth: oAuth2Client,
         }
     }
