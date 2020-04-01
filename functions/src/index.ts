@@ -18,6 +18,7 @@ import * as functions from 'firebase-functions';
 import * as IaItemRespostaFunction from './funcoes/IA_item_resposta_functions';
 
 exports.IaItemRespostaOnUpdateFunction = functions.firestore.document('IAItens/{iAItensId}/IAItemResposta/{iAItemRespostaId}').onUpdate(IaItemRespostaFunction.iniciarIaItemRespostaUpdate);
+exports.IaItemRespostaOnCreateFunction = functions.firestore.document('IAItens/{iAItensId}/IAItemResposta/{iAItemRespostaId}').onCreate(IaItemRespostaFunction.iniciarIaItemRespostaOnCreate);
 
 
 
