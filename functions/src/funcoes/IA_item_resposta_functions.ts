@@ -19,6 +19,18 @@ import * as GoogleApiController from "../google_api_controller/google_api_contro
 
 
 
+export function iniciarIaItemRespostaOnCreate(uploadSnap: any) {
+
+    const uploadSnapAfterData = uploadSnap.data();
+    const parent = uploadSnap.ref.parent.parent;
+
+    return parent.get().then(async (parentSnap: any) => {
+        const data = parentSnap.data();
+        return await getTabelaId(data, uploadSnapAfterData, uploadSnapAfterData.setor.id);
+    });
+}
+
+
 export function iniciarIaItemRespostaUpdate(uploadSnap: any) {
 
     // const uploadSnapBeforeData = uploadSnap.before.data();
@@ -49,24 +61,29 @@ export async function getTabelaId(IaAItemData: any, IaItemRespostaData: any, set
 export async function atualizarPlanilha(IaAItemData: any, IaItemRespostaData: any, tabelaId: string) {
 
     let relatorioController: GoogleApiController.SpreadSheetsApiController = new GoogleApiController.SpreadSheetsApiController(tabelaId);
+    let valorX: string = IaItemRespostaData.documento != null ? '=HYPERLINK("' + IaItemRespostaData.documento + '"; "X") ' : "X";
+
+    if(IaItemRespostaData.descricao != null){
+        relatorioController.adicionarNovaCelula("W", IaAItemData.linha, IaItemRespostaData.descricao)
+    }
 
     if (IaItemRespostaData.atendeTR == "Sim") {
 
-        relatorioController.adicionarNovaCelula("L", IaAItemData.linha, "X")
+        relatorioController.adicionarNovaCelula("L", IaAItemData.linha, valorX)
         relatorioController.adicionarNovaCelula("M", IaAItemData.linha, "")
         relatorioController.adicionarNovaCelula("N", IaAItemData.linha, "")
 
     } if (IaItemRespostaData.atendeTR == "Não") {
 
         relatorioController.adicionarNovaCelula("L", IaAItemData.linha, "")
-        relatorioController.adicionarNovaCelula("M", IaAItemData.linha, "X")
+        relatorioController.adicionarNovaCelula("M", IaAItemData.linha, valorX)
         relatorioController.adicionarNovaCelula("N", IaAItemData.linha, "")
 
     } if (IaItemRespostaData.atendeTR == "Parcialmente") {
 
         relatorioController.adicionarNovaCelula("L", IaAItemData.linha, "")
         relatorioController.adicionarNovaCelula("M", IaAItemData.linha, "")
-        relatorioController.adicionarNovaCelula("N", IaAItemData.linha, "X")
+        relatorioController.adicionarNovaCelula("N", IaAItemData.linha, valorX)
     }
 
     // Enviar para tabela na nuvem
