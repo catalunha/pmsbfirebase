@@ -13,9 +13,9 @@ import * as functions from 'firebase-functions';
 //     res.redirect(303, snapshot.ref.toString());
 //   });
 
-export const helloWorld = functions.https.onRequest((request, response) => {
- response.send("Hello from Firebase! Deu certooooo...");
-});
+// export const helloWorld = functions.https.onRequest((request, response) => {
+//  response.send("Hello from Firebase! Deu certooooo...");
+// });
 
 
 // /**
@@ -28,14 +28,24 @@ export const helloWorld = functions.https.onRequest((request, response) => {
 
 
 
-/**
- * IA
- */
+// /**
+//  * IA
+//  */
 
-import * as IaItemRespostaFunction from './funcoes/IA_item_resposta_functions';
+// import * as IaItemRespostaFunction from './funcoes/IA_item_resposta_functions';
 
-exports.IaItemRespostaOnUpdateFunction = functions.firestore.document('IAItens/{iAItensId}/IAItemResposta/{iAItemRespostaId}').onUpdate(IaItemRespostaFunction.iniciarIaItemRespostaUpdate);
-exports.IaItemRespostaOnCreateFunction = functions.firestore.document('IAItens/{iAItensId}/IAItemResposta/{iAItemRespostaId}').onCreate(IaItemRespostaFunction.iniciarIaItemRespostaOnCreate);
+// exports.IaItemRespostaOnUpdateFunction = functions.firestore.document('IAItens/{iAItensId}/IAItemResposta/{iAItemRespostaId}').onUpdate(IaItemRespostaFunction.iniciarIaItemRespostaUpdate);
+// exports.IaItemRespostaOnCreateFunction = functions.firestore.document('IAItens/{iAItensId}/IAItemResposta/{iAItemRespostaId}').onCreate(IaItemRespostaFunction.iniciarIaItemRespostaOnCreate);
+
+
+// /**
+//  * Checklist
+//  */
+
+// import * as ChecklistItemRespostaFunction from './funcoes/checklist_item_resposta_functions';
+
+// exports.ChecklistItemRespostaOnCreateFunction = functions.firestore.document('ChecklistItem/{checklistItemId}/ChecklistItemResposta/{checklistItemRespostaId}').onCreate(ChecklistItemRespostaFunction.iniciarChecklistItemRespostaOnCreate);
+// exports.ChecklistItemRespostaOnUpdateFunction = functions.firestore.document('ChecklistItem/{checklistItemId}/ChecklistItemResposta/{checklistItemRespostaId}').onUpdate(ChecklistItemRespostaFunction.iniciarChecklistItemRespostaUpdate);
 
 
 
