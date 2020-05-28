@@ -131,7 +131,7 @@ export default class Resposta01Template {
             },
             layout: 'noBorders'
         })
-        
+
         this.addContentElement({
             stack: [
                 { text: 'Lista que perguntas desse questionário:', style: 'subheader' },
@@ -293,7 +293,11 @@ export default class Resposta01Template {
             let contador = 1;
             for (var item in pergunta.arquivo) {
 
-                lista[1]['ul'].push({ text: "Imagem " + contador + ' . Click para visualizar.', link: pergunta.arquivo[item]['url'], decoration: 'underline', color: "blue" })
+                if (pergunta.arquivo[item]['url'] != null) {
+                    lista[1]['ul'].push({ text: "Imagem " + contador + ' . Click para visualizar.', link: pergunta.arquivo[item]['url'], decoration: 'underline', color: "blue" })
+                } else {
+                    lista[1]['ul'].push({ text: "Imagem " + contador + ' ( A imagem não foi enviada pelo aplicador do questionário) .', decoration: 'underline' })
+                }
                 contador++;
             }
             content.table.body.push(lista)
